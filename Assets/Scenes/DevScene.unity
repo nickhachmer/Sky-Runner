@@ -219,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 440525196}
   rigidbody: {fileID: 440525195}
-  speed: 0
+  speed: 10
   jumpForce: 300
 --- !u!50 &440525195
 Rigidbody2D:
