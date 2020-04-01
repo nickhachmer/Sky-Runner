@@ -219,8 +219,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 440525196}
   rigidbody: {fileID: 440525195}
-  speed: 10
-  jumpForce: 300
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  speed: 250
+  jumpForce: 350
+  downForce: 50
+  maxVerticalVelocity: 50
 --- !u!50 &440525195
 Rigidbody2D:
   serializedVersion: 4
@@ -240,7 +245,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: c78203309d6da5c49855dbf9b095f52b, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &440525196
 BoxCollider2D:
@@ -279,7 +284,7 @@ GameObject:
   - component: {fileID: 516843909}
   - component: {fileID: 516843910}
   - component: {fileID: 516843911}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
