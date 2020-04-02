@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     // public player values set in editor
     public int speed;
     public int jumpForce; 
+    public int dashForce;
     public int downForce;
     public int maxVerticalVelocity;
 
@@ -21,10 +22,13 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalAxis = 0;
     private float verticalAxis = 0;
     private bool jumpActive = false;
+    private bool dashActive = false;
+    private bool dashPressed = false;
     private int jumpCounter = 0;
     private int maxJumps = 2;
     private bool jumpPressed = false;
     private bool onGround = false;
+    private float startTime = 0;
 
     #endregion
 
@@ -43,9 +47,20 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // Horizontal Movement
         horizontalAxis = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !dashPressed) {
+            startTime = Time.fixedTime;
+            dashActive = true;
+            dashPressed = true;
+        } else if (Input.GetKeyUp(KeyCode.LeftShift)) {
+            dashPressed = false;
+        }
+
+
+        // Vertical Movement
         verticalAxis = Input.GetAxisRaw("Vertical");
-        
         if (Input.GetButtonDown("Jump") && !jumpPressed) {
             jumpActive = true;
             jumpPressed = true;
@@ -55,10 +70,17 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate() {
-        MoveHorizontal(horizontalAxis * speed * Time.deltaTime);
+        // Horizontal Movement
+        if (dashActive) {
+            HorizontalDash();
+        } else {
+            MoveHorizontal();
+        }
+
+        // Vertical Movement
         if (verticalAxis < 0) AccelerateDown();
         if (jumpActive) Jump();
-        checkVerticalVeclocity();
+        limitVericalVeclocity();
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -70,7 +92,19 @@ public class PlayerMovement : MonoBehaviour
 
     #region Movement Methods
 
-    //to implement double jump will need to check - can't use on collision./
+    private void MoveHorizontal() {        
+        rigidbody.velocity = new Vector2(horizontalAxis * speed * Time.deltaTime, rigidbody.velocity.y);
+    }
+
+    private void HorizontalDash() {
+        float timeDifference = Time.fixedTime - startTime;
+        rigidbody.velocity = new Vector2(-70 * timeDifference + 30, 0);
+        if (timeDifference >= 0.3f) {
+            dashActive = false;
+        }
+    }
+    
+    //to implement double jump will need to check - can't use on collision - may cause problems with wall climb
     private void Jump() {
         if (onGround) jumpCounter = 0; 
         if (onGround || jumpCounter < maxJumps) {
@@ -81,18 +115,13 @@ public class PlayerMovement : MonoBehaviour
         }
         jumpActive = false;
     }
-    
-    private void MoveHorizontal(float s) {
-        //will need to change facing direction
-        rigidbody.velocity = new Vector2(s, rigidbody.velocity.y);
-    }
 
     private void AccelerateDown() {
         Debug.Log("Down");
         rigidbody.AddForce(new Vector2(0, -downForce));
     }
 
-    private void checkVerticalVeclocity() {
+    private void limitVericalVeclocity() {
         if (rigidbody.velocity.y >= maxVerticalVelocity) {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, maxVerticalVelocity);
         } else if (rigidbody.velocity.y <= -maxVerticalVelocity) {
