@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     // public player values set in editor
     public int speed;
     public int jumpForce; 
-    public int dashForce;
     public int downForce;
     public int maxVerticalVelocity;
 
@@ -29,6 +28,9 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpPressed = false;
     private bool onGround = false;
     private float startTime = 0;
+    private bool canDash = false;
+    private bool onWall = false;
+    private float axisBuffer = 0.2f;
 
     #endregion
 
@@ -47,13 +49,16 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckTouchingTerrain();
 
         // Horizontal Movement
+        if (onGround) canDash = true;
         horizontalAxis = Input.GetAxisRaw("Horizontal");
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !dashPressed) {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !dashPressed && canDash) {
             startTime = Time.fixedTime;
             dashActive = true;
             dashPressed = true;
+            canDash = false;
         } else if (Input.GetKeyUp(KeyCode.LeftShift)) {
             dashPressed = false;
         }
@@ -74,21 +79,23 @@ public class PlayerMovement : MonoBehaviour
         if (dashActive) {
             HorizontalDash();
         } else {
-            MoveHorizontal();
+            if (Mathf.Abs(horizontalAxis) > axisBuffer) {
+                MoveHorizontal();
+            }
         }
 
         // Vertical Movement
-        if (verticalAxis < 0) AccelerateDown();
+        if (verticalAxis < axisBuffer && !limitDownwardVericalVeclocity()) AccelerateDown();
+        if (verticalAxis > axisBuffer && onWall) wallClimb();
         if (jumpActive) Jump();
-        limitVericalVeclocity();
     }
 
-    void OnCollisionEnter2D(Collision2D col) {
-        if ((1 << col.collider.gameObject.layer) == terrainLayer.value) {
-            Debug.Log("Terrain collision");
-            onGround = true;
-        }
-    }
+    // void OnCollisionEnter2D(Collision2D col) {
+    //     if ((1 << col.collider.gameObject.layer) == terrainLayer.value) {
+    //         Debug.Log("Terrain collision");
+    //         onGround = true;
+    //     }
+    // }
 
     #region Movement Methods
 
@@ -121,23 +128,31 @@ public class PlayerMovement : MonoBehaviour
         rigidbody.AddForce(new Vector2(0, -downForce));
     }
 
-    private void limitVericalVeclocity() {
-        if (rigidbody.velocity.y >= maxVerticalVelocity) {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, maxVerticalVelocity);
-        } else if (rigidbody.velocity.y <= -maxVerticalVelocity) {
+    /**
+    * return bool to indicate if currently limiting
+    */
+    private bool limitDownwardVericalVeclocity() {
+        if (rigidbody.velocity.y <= -maxVerticalVelocity) {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, -maxVerticalVelocity);
+            return true;
         }
+        return false;
     }
 
-    // private bool CheckTouchingGround() 
-    // {
-    //     float touchingGroundBuffer = 1.0f;
-    //     bool onGround = false;
-    //     onGround = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, terrainLayer.value);
-    //     Debug.DrawRay(boxCollider.bounds.center, Vector2.down * boxCollider.bounds.size, Color.green);
-    //     Debug.Log(onGround);
-    //     return onGround;
-    // }
+    private void wallClimb() {
+        
+    }
+    private void CheckTouchingTerrain() 
+    {
+        // max distance from the collider in which to register a collision
+        float touchingGroundBuffer = 0.1f;
+        onGround = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, terrainLayer.value);
+        onWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, terrainLayer.value) ||
+                    Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, terrainLayer.value);
+        //Debug.DrawRay(boxCollider.bounds.center, Vector2.down * boxCollider.bounds.size, Color.green);
+        Debug.Log("On ground: " + onGround);
+        Debug.Log("On wall: " + onWall);
+    }
 
     #endregion
 }
