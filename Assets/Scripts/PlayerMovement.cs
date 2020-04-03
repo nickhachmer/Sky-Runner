@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private bool canDash = false;
     private bool onWall = false;
     private float axisBuffer = 0.2f;
+    private int direction = 1;
 
     #endregion
 
@@ -79,13 +80,11 @@ public class PlayerMovement : MonoBehaviour
         if (dashActive) {
             HorizontalDash();
         } else {
-            if (Mathf.Abs(horizontalAxis) > axisBuffer) {
-                MoveHorizontal();
-            }
+            MoveHorizontal();
         }
 
         // Vertical Movement
-        if (verticalAxis < axisBuffer && !limitDownwardVericalVeclocity()) AccelerateDown();
+        if (verticalAxis < -axisBuffer && !limitDownwardVericalVeclocity()) AccelerateDown();
         if (verticalAxis > axisBuffer && onWall) wallClimb();
         if (jumpActive) Jump();
     }
@@ -114,7 +113,10 @@ public class PlayerMovement : MonoBehaviour
     //to implement double jump will need to check - can't use on collision - may cause problems with wall climb
     private void Jump() {
         if (onGround) jumpCounter = 0; 
-        if (onGround || jumpCounter < maxJumps) {
+        if (onWall) {
+            rigidbody.velocity = new Vector2(0, 0);
+            rigidbody.AddForce(new Vector2(direction * jumpForce, jumpForce));
+        } else if (onGround || jumpCounter < maxJumps) {
             jumpCounter++;
             onGround = false;
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
@@ -140,18 +142,27 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void wallClimb() {
-        
+        rigidbody.velocity = new Vector2(0 , speed * Time.deltaTime);
     }
     private void CheckTouchingTerrain() 
     {
         // max distance from the collider in which to register a collision
         float touchingGroundBuffer = 0.1f;
+
+        // detect 
         onGround = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, terrainLayer.value);
-        onWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, terrainLayer.value) ||
-                    Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, terrainLayer.value);
+        if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, terrainLayer.value)) {
+            onWall = true;
+            direction = 1;
+        } else if (Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, terrainLayer.value) ) {
+            onWall = true;
+            direction = -1;
+        }
+
+        
         //Debug.DrawRay(boxCollider.bounds.center, Vector2.down * boxCollider.bounds.size, Color.green);
-        Debug.Log("On ground: " + onGround);
-        Debug.Log("On wall: " + onWall);
+        //Debug.Log("On ground: " + onGround);
+        //Debug.Log("On wall: " + onWall);
     }
 
     #endregion
