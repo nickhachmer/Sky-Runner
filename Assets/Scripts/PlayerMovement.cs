@@ -38,12 +38,30 @@ public class PlayerMovement : MonoBehaviour
     private bool onLeftWall = false;
     private bool onRightWall = false;
     private bool wallJumpActive = false;
+    private bool wallClimbActive = false;
     private float axisBuffer = 0.2f;
     private enum DirectionFacing: int {
         Right = 1,
         Left = -1
     }
     private DirectionFacing currentDirectionFacing = DirectionFacing.Right;
+    private bool horizontalMoveActive = false;
+    private bool hasAction {
+        get {
+            return wallJumpActive || wallClimbActive || dashActive || jumpActive || horizontalMoveActive;
+        }
+    }
+
+    private enum MovementState: short {
+        Default = 0,
+        JumpActive = 1,
+        DashActive = 2,
+        WallClimbActive = 3,
+        WallJumpActive = 4
+    }
+
+
+    private MovementState currentMovementState = MovementState.Default;
 
     #endregion
 
@@ -67,65 +85,76 @@ public class PlayerMovement : MonoBehaviour
 
     /** 
     * Update is called once per frame
+    *
+    * Capture inputs and determine current movement state
     */
     void Update()
     {
         // Check if on ground or wall
         CheckTouchingTerrain();
-
-        #region Horizontal Movement
         
-            // used for moving left to right
-            horizontalAxis = Input.GetAxisRaw("Horizontal");
+        // dash resets when player touches ground or wall
+        if (onGround || onWall) {
+            canDash = true;
+        }
 
-            // dash resets when player touches ground or wall
-            if (onGround || onWall) {
-                canDash = true;
-            }
+        // wall climb resets when player touches ground
+        if (onGround) {
+            canWallClimb = true;
+        }
 
-            // actiavte horizontal dash
-            if (Input.GetKeyDown(KeyCode.LeftShift) && canDash) {
-                startTime = Time.fixedTime;
-                dashActive = true;
-                canDash = false;
-            }    
+        horizontalAxis = Input.GetAxisRaw("Horizontal");
+        verticalAxis = Input.GetAxisRaw("Vertical");
 
-        #endregion
-
-        #region Vertical Movement
+        bool jumpKeyPressed = Input.GetButtonDown("Jump");
+        bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
         
-            if (onGround) {
-                canWallClimb = true;
-            }
+        if (jumpKeyPressed) {
+            currentMovementState = MovementState.JumpActive;
+        } else if (dashKeyPressed && canDash) {
+            startTime = Time.fixedTime;
+            currentMovementState = MovementState.DashActive;
+            canDash = false;
+        }    
 
-            // used to climbing up walls and moving faster while falling
-            verticalAxis = Input.GetAxisRaw("Vertical");
-
-            // activate vertical jumping
-            if (Input.GetButtonDown("Jump") && !jumpPressed) {
-
-                if (onWall) {
-                    startTime = Time.fixedTime;
-                    wallJumpActive = true;
-                } else {
-                    jumpActive = true;
-                }
-
-                jumpPressed = true;
-            } else if (Input.GetButtonUp("Jump")) {
-                jumpPressed = false;
-            }
-
-        #endregion
+        if (Input.GetButtonUp("Jump")) {
+            jumpPressed = false;
+        }
     }
 
     /**
     * FixedUpdate is called once every 0.02 sec
     * 
-    * Executes physics movement operations
+    * Determine which physics movement operations to execture based on current movement states
     */
     void FixedUpdate() {
-        
+
+
+        // if (wallJumpActive) {
+        //     Vertical_WallJump();
+        // } else if (dashActive) {
+        //     Horizontal_Dash();
+        // } else if (jumpActive) {
+        //     Vertical_Jump();
+        // } else {
+        //     Horizontal_Move();
+        //     Vertical_Move();
+        // }
+
+
+        switch (currentMovementState) {
+            case MovementState.DashActive: Horizontal_Dash(); break;
+            case MovementState.JumpActive: Vertical_Jump(); break;
+            case MovementState.Default: {
+                Horizontal_Move();
+                Vertical_Move(); 
+                break;
+            } 
+        }
+
+
+        /*
+
         #region Horizontal Movement
             
             if (dashActive) {
@@ -149,11 +178,13 @@ public class PlayerMovement : MonoBehaviour
             }
 
             if (verticalAxis > axisBuffer && onWall && canWallClimb) {
-                wallClimb();
+                Vertical_WallClimb();
             }
             
 
         #endregion
+
+        */
     }
 
     // void OnCollisionEnter2D(Collision2D col) {
@@ -180,7 +211,12 @@ public class PlayerMovement : MonoBehaviour
     * Gives the player quick burst of horizontal movement in the direction the player is facing over a fixed time interval
     */
     private void Horizontal_Dash() {
+
+        rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * 2 * jumpForce, 0));
+        currentMovementState = MovementState.Default;
         
+        /*
+       
         // calculate time since dash was started
         float timeDifference = Time.fixedTime - startTime;
         
@@ -192,14 +228,22 @@ public class PlayerMovement : MonoBehaviour
 
         // check to see if dash has ended
         if (timeDifference >= 0.3f) {
+            currentMovementState = MovementState.Default;
             dashActive = false;
         }
+
+        */
     }
     
     /**
     * Accelerate the player vertically up
     */
     private void Vertical_Jump() {
+
+        if (onWall) {
+            Vertical_WallJump();
+            return;
+        }
 
         // reset jumps when on the ground
         if (onGround) {
@@ -216,28 +260,24 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // vertical jump has ended
-        jumpActive = false;
+        currentMovementState = MovementState.Default;
     }
 
     /**
     * Accelerate the player away from the wall in an upward direction
     */
     private void Vertical_WallJump() {
+        rigidbody.velocity = new Vector2(0, 0);
+        rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * jumpForce, jumpForce));
+        jumpCounter = 1;
+        currentMovementState = MovementState.Default;
+    }
 
-        // calculate time since dash was started
-        float timeDifference = Time.fixedTime - startTime;
-
-        // calculate velocity of dash
-        float wallJumpVelocity = -20 * timeDifference + 20;
-
-        // wall jump
-        rigidbody.velocity = new Vector2(((float) currentDirectionFacing) * wallJumpVelocity, wallJumpVelocity - 10);
-        
-        // check to see if wall jump has ended
-        if (timeDifference >= 0.2f) {
-            Debug.Log("wall jump end");
-            wallJumpActive = false;
-            jumpCounter = 1;
+    private void Vertical_Move() {
+        if (verticalAxis > 0 &&  onWall) {
+            Vertical_WallClimb();
+        } else if (verticalAxis < 0 && !onWall && !onGround) {
+            Vertical_AccelerateDown();
         }
     }
 
@@ -246,18 +286,7 @@ public class PlayerMovement : MonoBehaviour
         rigidbody.AddForce(new Vector2(0, -downForce));
     }
 
-    /**
-    * return bool to indicate if currently limiting
-    */
-    private bool limitDownwardVericalVeclocity() {
-        if (rigidbody.velocity.y <= -maxVerticalVelocity) {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, -maxVerticalVelocity);
-            return true;
-        }
-        return false;
-    }
-
-    private void wallClimb() {
+    private void Vertical_WallClimb() {
         //rigidbody.velocity = new Vector2(0 , speed * Time.deltaTime);
         rigidbody.AddForce(new Vector2(0, jumpForce));
         canWallClimb = false;
