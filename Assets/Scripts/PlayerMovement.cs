@@ -172,7 +172,8 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateDirectionFacing();
 
-        rigidbody.velocity = new Vector2(horizontalAxis * speed * Time.deltaTime, rigidbody.velocity.y);
+        rigidbody.AddForce(new Vector2(horizontalAxis * speed, 0));
+        //rigidbody.velocity = new Vector2(horizontalAxis * speed * Time.deltaTime, rigidbody.velocity.y); //speed 250
     }
 
     /**
@@ -187,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
         float dashVelocity = -90 * timeDifference + 30;
 
         // horizontal dash
-        rigidbody.velocity = new Vector2(dashVelocity, 0);
+        rigidbody.velocity = new Vector2(((float) currentDirectionFacing) * dashVelocity, 0);
 
         // check to see if dash has ended
         if (timeDifference >= 0.3f) {
@@ -257,7 +258,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void wallClimb() {
-        rigidbody.velocity = new Vector2(0 , speed * Time.deltaTime);
+        //rigidbody.velocity = new Vector2(0 , speed * Time.deltaTime);
+        rigidbody.AddForce(new Vector2(0, jumpForce));
         canWallClimb = false;
     }
 
