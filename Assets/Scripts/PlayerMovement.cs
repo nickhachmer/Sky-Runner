@@ -4,52 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    #region PlayerMovement Variables
-    // playe
-    public BoxCollider2D boxCollider;
-    public new Rigidbody2D rigidbody;
-    public LayerMask terrainLayer;
+    #region Player Enums
 
-    // public player values set in editor
-    public int speed;
-    public int jumpForce; 
-    public int downForce;
-    public int maxVerticalVelocity;
-
-
-    // private player values
-    private float horizontalAxis = 0;
-    private float verticalAxis = 0;
-    private bool jumpActive = false;
-    private bool dashActive = false;
-    private bool dashPressed = false;
-    private int jumpCounter = 0;
-    private int maxJumps = 2;
-    private bool jumpPressed = false;
-    private bool onGround = false;
-    private float startTime = 0;
-    private bool canDash = false;
-    private bool canWallClimb = false;
-    private bool onWall {
-        get {
-            return onLeftWall || onRightWall;
-        }
-    }
-    private bool onLeftWall = false;
-    private bool onRightWall = false;
-    private bool wallJumpActive = false;
-    private bool wallClimbActive = false;
-    private float axisBuffer = 0.2f;
     private enum DirectionFacing: int {
         Right = 1,
         Left = -1
-    }
-    private DirectionFacing currentDirectionFacing = DirectionFacing.Right;
-    private bool horizontalMoveActive = false;
-    private bool hasAction {
-        get {
-            return wallJumpActive || wallClimbActive || dashActive || jumpActive || horizontalMoveActive;
-        }
     }
 
     private enum MovementState: short {
@@ -60,7 +19,41 @@ public class PlayerMovement : MonoBehaviour
         WallJumpActive = 4
     }
 
+    #endregion
 
+    #region PlayerMovement Variables
+
+    // public player values set in editor
+    public BoxCollider2D boxCollider;
+    public new Rigidbody2D rigidbody;
+    public LayerMask terrainLayer;
+
+    public int speed;
+    public int jumpForce; 
+    public int downForce;
+
+
+    // private player values
+    private float horizontalAxis = 0;
+    private float verticalAxis = 0;
+
+    private int maxJumps = 2;
+    private int jumpCounter = 0;
+    
+    private bool canDash = false;
+    private bool canWallClimb = false;
+    
+    private bool onGround = false;
+    private bool onLeftWall = false;
+    private bool onRightWall = false;
+    private bool onWall {
+        get {
+            return onLeftWall || onRightWall;
+        }
+    }
+  
+    private float axisBuffer = 0.2f;
+    private DirectionFacing currentDirectionFacing = DirectionFacing.Right;
     private MovementState currentMovementState = MovementState.Default;
 
     #endregion
@@ -112,13 +105,12 @@ public class PlayerMovement : MonoBehaviour
         if (jumpKeyPressed) {
             currentMovementState = MovementState.JumpActive;
         } else if (dashKeyPressed && canDash) {
-            startTime = Time.fixedTime;
             currentMovementState = MovementState.DashActive;
             canDash = false;
         }    
 
         if (Input.GetButtonUp("Jump")) {
-            jumpPressed = false;
+            //jumpPressed = false;
         }
     }
 
@@ -128,20 +120,6 @@ public class PlayerMovement : MonoBehaviour
     * Determine which physics movement operations to execture based on current movement states
     */
     void FixedUpdate() {
-
-
-        // if (wallJumpActive) {
-        //     Vertical_WallJump();
-        // } else if (dashActive) {
-        //     Horizontal_Dash();
-        // } else if (jumpActive) {
-        //     Vertical_Jump();
-        // } else {
-        //     Horizontal_Move();
-        //     Vertical_Move();
-        // }
-
-
         switch (currentMovementState) {
             case MovementState.DashActive: Horizontal_Dash(); break;
             case MovementState.JumpActive: Vertical_Jump(); break;
@@ -151,48 +129,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             } 
         }
-
-
-        /*
-
-        #region Horizontal Movement
-            
-            if (dashActive) {
-                Horizontal_Dash();
-            } else {
-                Horizontal_Move();
-            }
-
-        #endregion
-
-        #region Vertical Movement
-
-            if (jumpActive) {
-                Vertical_Jump();
-            } else if (wallJumpActive) {
-                Vertical_WallJump();
-            }
-
-            if (verticalAxis < -axisBuffer && !limitDownwardVericalVeclocity()) {
-                Vertical_AccelerateDown();
-            }
-
-            if (verticalAxis > axisBuffer && onWall && canWallClimb) {
-                Vertical_WallClimb();
-            }
-            
-
-        #endregion
-
-        */
     }
-
-    // void OnCollisionEnter2D(Collision2D col) {
-    //     if ((1 << col.collider.gameObject.layer) == terrainLayer.value) {
-    //         Debug.Log("Terrain collision");
-    //         onGround = true;
-    //     }
-    // }
 
     #region Movement Methods
 
@@ -204,7 +141,6 @@ public class PlayerMovement : MonoBehaviour
         UpdateDirectionFacing();
 
         rigidbody.AddForce(new Vector2(horizontalAxis * speed, 0));
-        //rigidbody.velocity = new Vector2(horizontalAxis * speed * Time.deltaTime, rigidbody.velocity.y); //speed 250
     }
 
     /**
@@ -212,27 +148,9 @@ public class PlayerMovement : MonoBehaviour
     */
     private void Horizontal_Dash() {
 
-        rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * 2 * jumpForce, 0));
+        rigidbody.velocity = new Vector2(0, 0);
+        rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * jumpForce, 10));
         currentMovementState = MovementState.Default;
-        
-        /*
-       
-        // calculate time since dash was started
-        float timeDifference = Time.fixedTime - startTime;
-        
-        // calculate velocity of dash
-        float dashVelocity = -90 * timeDifference + 30;
-
-        // horizontal dash
-        rigidbody.velocity = new Vector2(((float) currentDirectionFacing) * dashVelocity, 0);
-
-        // check to see if dash has ended
-        if (timeDifference >= 0.3f) {
-            currentMovementState = MovementState.Default;
-            dashActive = false;
-        }
-
-        */
     }
     
     /**
@@ -287,9 +205,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Vertical_WallClimb() {
-        //rigidbody.velocity = new Vector2(0 , speed * Time.deltaTime);
-        rigidbody.AddForce(new Vector2(0, jumpForce));
-        canWallClimb = false;
+        if (canWallClimb) {
+            rigidbody.AddForce(new Vector2(0, jumpForce));
+            canWallClimb = false;
+        }
     }
 
     /**
@@ -319,7 +238,6 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("On wall: " + onWall);
     }
 
-
     private void UpdateDirectionFacing() {
         if (onWall) {
             if (onLeftWall) {
@@ -337,7 +255,6 @@ public class PlayerMovement : MonoBehaviour
             currentDirectionFacing = DirectionFacing.Right;
         }
     }
-
 
     #endregion
 }
