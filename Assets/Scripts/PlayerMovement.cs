@@ -96,8 +96,8 @@ public class PlayerMovement : MonoBehaviour
             canWallClimb = true;
         }
 
-        horizontalAxis = Input.GetAxisRaw("Horizontal");
-        verticalAxis = Input.GetAxisRaw("Vertical");
+        horizontalAxis = Mathf.Abs(Input.GetAxisRaw("Horizontal")) > axisBuffer? Input.GetAxisRaw("Horizontal") : 0;
+        verticalAxis = Mathf.Abs(Input.GetAxisRaw("Vertical")) > axisBuffer? Input.GetAxisRaw("Vertical") : 0;
 
         bool jumpKeyPressed = Input.GetButtonDown("Jump");
         bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
@@ -107,10 +107,6 @@ public class PlayerMovement : MonoBehaviour
         } else if (dashKeyPressed && canDash) {
             currentMovementState = MovementState.DashActive;
             canDash = false;
-        }    
-
-        if (Input.GetButtonUp("Jump")) {
-            //jumpPressed = false;
         }
     }
 
@@ -147,7 +143,6 @@ public class PlayerMovement : MonoBehaviour
     * Gives the player quick burst of horizontal movement in the direction the player is facing over a fixed time interval
     */
     private void Horizontal_Dash() {
-
         rigidbody.velocity = new Vector2(0, 0);
         rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * jumpForce, 10));
         currentMovementState = MovementState.Default;
@@ -169,15 +164,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (jumpCounter < maxJumps) {
-            
-            // vertical jump
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
             rigidbody.AddForce(new Vector2(0, jumpForce));
-
             jumpCounter++;
         }
 
-        // vertical jump has ended
         currentMovementState = MovementState.Default;
     }
 
@@ -191,6 +182,9 @@ public class PlayerMovement : MonoBehaviour
         currentMovementState = MovementState.Default;
     }
 
+    /**
+    * Determine which vertical movement should be executed
+    */
     private void Vertical_Move() {
         if (verticalAxis > 0 &&  onWall) {
             Vertical_WallClimb();
@@ -199,17 +193,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /**
+    * Makes player fall faster
+    */
     private void Vertical_AccelerateDown() {
-        Debug.Log("Down");
         rigidbody.AddForce(new Vector2(0, -downForce));
     }
 
+    /**
+    * Move player upward along a wall
+    */
     private void Vertical_WallClimb() {
         if (canWallClimb) {
             rigidbody.AddForce(new Vector2(0, jumpForce));
             canWallClimb = false;
         }
     }
+
+    #endregion
 
     /**
     * Checks to see if player is touching the ground or walls
@@ -238,8 +239,12 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("On wall: " + onWall);
     }
 
+    /**
+    * correctly rotates player object depending on which way it is moving
+    */
     private void UpdateDirectionFacing() {
         if (onWall) {
+            // if on wall face away from the wall
             if (onLeftWall) {
                 transform.rotation = new Quaternion(0, 0, 0, 0);
                 currentDirectionFacing = DirectionFacing.Right;
@@ -256,5 +261,5 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    #endregion
+    
 }
