@@ -428,7 +428,7 @@ MonoBehaviour:
   terrainLayer:
     serializedVersion: 2
     m_Bits: 1024
-  speed: 50
+  speed: 22
   jumpForce: 1000
   downForce: 50
 --- !u!50 &440525195
@@ -444,7 +444,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 5
+  m_LinearDrag: 2.5
   m_AngularDrag: 0.05
   m_GravityScale: 3
   m_Material: {fileID: 6200000, guid: c78203309d6da5c49855dbf9b095f52b, type: 2}
