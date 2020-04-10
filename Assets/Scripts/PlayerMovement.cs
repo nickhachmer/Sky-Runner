@@ -15,8 +15,7 @@ public class PlayerMovement : MonoBehaviour
         Default = 0,
         JumpActive = 1,
         DashActive = 2,
-        WallClimbActive = 3,
-        WallJumpActive = 4
+        SlingShotActive = 3
     }
 
     #endregion
@@ -26,14 +25,15 @@ public class PlayerMovement : MonoBehaviour
     // public player values set in editor
     public BoxCollider2D boxCollider;
     public new Rigidbody2D rigidbody;
-    public LayerMask terrainLayer;
-
     public int speed;
     public int jumpForce; 
     public int downForce;
 
 
     // private player values
+    private LayerMask terrainLayer;
+    private Vector3 activeOrbPosition;
+
     private float horizontalAxis = 0;
     private float verticalAxis = 0;
 
@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     
     private bool canDash = false;
     private bool canWallClimb = false;
+    private bool slingShotActive = false;
     
     private bool onGround = false;
     private bool onLeftWall = false;
@@ -64,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     * Used for intialization
     */ 
     void Awake() {
+        terrainLayer = LayerMask.NameToLayer("Terrain");
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
     }
@@ -101,8 +103,11 @@ public class PlayerMovement : MonoBehaviour
 
         bool jumpKeyPressed = Input.GetButtonDown("Jump");
         bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
+        bool slingShotPressed = Input.GetKeyDown(KeyCode.F);
         
-        if (jumpKeyPressed) {
+        if (slingShotPressed) {
+            currentMovementState = MovementState.SlingShotActive;
+        } else if (jumpKeyPressed) {
             currentMovementState = MovementState.JumpActive;
         } else if (dashKeyPressed && canDash) {
             currentMovementState = MovementState.DashActive;
@@ -119,6 +124,7 @@ public class PlayerMovement : MonoBehaviour
         switch (currentMovementState) {
             case MovementState.DashActive: Horizontal_Dash(); break;
             case MovementState.JumpActive: Vertical_Jump(); break;
+            case MovementState.SlingShotActive: Omnidirectional_SlingShot(); break;
             case MovementState.Default: {
                 Horizontal_Move();
                 Vertical_Move(); 
@@ -210,6 +216,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Omnidirectional_SlingShot() {
+        if (activeOrbPosition != null) {
+            if (!slingShotActive) {
+                rigidbody.velocity = new Vector2(0, 0);
+                slingShotActive = true;
+            }
+
+            Vector2 direction = (activeOrbPosition - transform.position).normalized;
+
+            rigidbody.AddForce(direction * 100);
+        }
+    }
+
     #endregion
 
     /**
@@ -219,9 +238,10 @@ public class PlayerMovement : MonoBehaviour
     {
         // max distance from the collider in which to register a collision
         float touchingGroundBuffer = 0.1f;
+        int layerValue = 1 << terrainLayer.value;
 
         // creates small area just underneath the Player Collider and checks if any object on the terrain layer is inside this area
-        onGround = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, terrainLayer.value);
+        onGround = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, layerValue);
         
         // onGround take priority over onWall;
         if (onGround) {
@@ -229,8 +249,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // creates small area just to the left and right of the Player Collider and checks if any object on the terrain layer is inside this area
-        onLeftWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, terrainLayer.value);
-        onRightWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, terrainLayer.value);
+        onLeftWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, layerValue);
+        onRightWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, layerValue);
 
         UpdateDirectionFacing();
 
@@ -261,5 +281,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void SetActiveOrb(Vector3 activeOrbPos) {
+        activeOrbPosition = activeOrbPos;
+    }
     
 }

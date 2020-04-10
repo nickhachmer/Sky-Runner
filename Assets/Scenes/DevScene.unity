@@ -240,6 +240,7 @@ GameObject:
   - component: {fileID: 395353721}
   - component: {fileID: 395353723}
   - component: {fileID: 395353722}
+  - component: {fileID: 395353724}
   m_Layer: 0
   m_Name: orb
   m_TagString: Untagged
@@ -268,7 +269,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395353720}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -327,6 +328,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &395353724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395353720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e440762bd8d5b6f42b980b87719386f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 0
 --- !u!1 &438222401
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,9 +547,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 440525196}
   rigidbody: {fileID: 440525195}
-  terrainLayer:
-    serializedVersion: 2
-    m_Bits: 1024
   speed: 22
   jumpForce: 1000
   downForce: 50
