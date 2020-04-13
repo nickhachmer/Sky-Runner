@@ -29,10 +29,10 @@ public class PlayerMovement : MonoBehaviour
     public int jumpForce; 
     public int downForce;
 
-
     // private player values
     private LayerMask terrainLayer;
-    private Vector3 activeOrbPosition;
+    private Vector3 activeOrbPosition = new Vector3(0, 0, 0);
+    private bool isOrbActive = false;
 
     private float horizontalAxis = 0;
     private float verticalAxis = 0;
@@ -54,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     }
   
     private float axisBuffer = 0.2f;
+    private float gravityScale;
     private DirectionFacing currentDirectionFacing = DirectionFacing.Right;
     private MovementState currentMovementState = MovementState.Default;
 
@@ -68,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
         terrainLayer = LayerMask.NameToLayer("Terrain");
         boxCollider = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
+        gravityScale = rigidbody.gravityScale;
     }
     
     /**
@@ -98,6 +100,11 @@ public class PlayerMovement : MonoBehaviour
             canWallClimb = true;
         }
 
+        // turn gravity back on when done sling shot
+        if (!slingShotActive) {
+            rigidbody.gravityScale = gravityScale;
+        }
+
         horizontalAxis = Mathf.Abs(Input.GetAxisRaw("Horizontal")) > axisBuffer? Input.GetAxisRaw("Horizontal") : 0;
         verticalAxis = Mathf.Abs(Input.GetAxisRaw("Vertical")) > axisBuffer? Input.GetAxisRaw("Vertical") : 0;
 
@@ -105,9 +112,10 @@ public class PlayerMovement : MonoBehaviour
         bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
         bool slingShotPressed = Input.GetKeyDown(KeyCode.F);
         
-        if (slingShotPressed) {
+        if (slingShotPressed && isOrbActive) {
             currentMovementState = MovementState.SlingShotActive;
         } else if (jumpKeyPressed) {
+            slingShotActive = false;
             currentMovementState = MovementState.JumpActive;
         } else if (dashKeyPressed && canDash) {
             currentMovementState = MovementState.DashActive;
@@ -217,15 +225,16 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Omnidirectional_SlingShot() {
-        if (activeOrbPosition != null) {
+        if (isOrbActive) {
             if (!slingShotActive) {
-                rigidbody.velocity = new Vector2(0, 0);
+                jumpCounter = 0;
                 slingShotActive = true;
+                rigidbody.gravityScale = 0;
             }
 
             Vector2 direction = (activeOrbPosition - transform.position).normalized;
-
-            rigidbody.AddForce(direction * 100);
+            
+            rigidbody.AddForce(direction * 150);
         }
     }
 
@@ -281,7 +290,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void SetActiveOrb(Vector3 activeOrbPos) {
+    public void SetActiveOrb(bool isActive, Vector3 activeOrbPos) {
+        isOrbActive = isActive;
         activeOrbPosition = activeOrbPos;
     }
     

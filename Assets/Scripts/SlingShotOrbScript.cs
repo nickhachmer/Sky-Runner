@@ -19,16 +19,19 @@ public class SlingShotOrbScript : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        
+        // requires refactor only need to send the position once per active - this does it every frame
+
         bool isTerrainInBetween = Physics2D.Linecast(transform.position, playerTransform.position, 1 << terrainLayer.value);
 
         if (!isTerrainInBetween && Vector2.Distance(transform.position, playerTransform.position) < orbRange) {
             isActive = true;
-            playerMovementScript.SetActiveOrb(transform.position);
+            playerMovementScript.SetActiveOrb(true, transform.position);
         } else {
             isActive = false;
+            playerMovementScript.SetActiveOrb(false, new Vector3(0, 0, 0));
         }
 
 
