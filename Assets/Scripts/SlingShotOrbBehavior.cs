@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlingShotOrbScript : MonoBehaviour
+public class SlingShotOrbBehavior : MonoBehaviour
 {
     
     public bool isActive = false;
