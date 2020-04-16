@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class StartMenuBehavior : MonoBehaviour
 {
@@ -35,11 +34,11 @@ public class StartMenuBehavior : MonoBehaviour
     #region Main Menu
 
     public void MainMenu_Button_Play() {
-        Transition(MainMenu, LevelSelect);
+        MenuController.Transition(MainMenu, LevelSelect);
     }
 
     public void MainMenu_Button_Options() {
-        Transition(MainMenu, OptionsMenu);
+        MenuController.Transition(MainMenu, OptionsMenu);
     }
 
     public void MainMenu_Button_Quit() {
@@ -51,7 +50,7 @@ public class StartMenuBehavior : MonoBehaviour
     #region Options Menu
 
     public void OptionsMenu_Button_Back() {
-        Transition(OptionsMenu, MainMenu);
+        MenuController.Transition(OptionsMenu, MainMenu);
     }
 
     #endregion
@@ -59,19 +58,16 @@ public class StartMenuBehavior : MonoBehaviour
     #region Level Select
 
     public void LevelSelect_Button_Play(int levelNumber) {
-        SceneManager.LoadScene(levelNumber);
+        MenuController.LoadScene(levelNumber);
     }
 
     public void LevelSelect_Button_Back() {
-        Transition(LevelSelect, MainMenu);
+        MenuController.Transition(LevelSelect, MainMenu);
     }
 
     #endregion
 
-    public void Transition(GameObject from, GameObject to) {
-        from.SetActive(false);
-        to.SetActive(true);
-    }
+    
 
 
 }

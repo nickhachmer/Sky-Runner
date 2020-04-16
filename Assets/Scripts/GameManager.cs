@@ -18,4 +18,7 @@ public class GameManager : MonoBehaviour
 
     GameManager() {  }
 
+    // I want to use game manager as a way for scripts to communicate with eachother with out having to get eachothers references
+
+    // Also I will have game options in here
 }

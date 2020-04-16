@@ -9,13 +9,13 @@ public class SlingShotOrbBehavior : MonoBehaviour
 
     private short orbRange = 10;
     private Transform playerTransform;
-    private PlayerMovement playerMovementScript;
+    private PlayerMovementController playerMovementScript;
     private LayerMask terrainLayer;
 
     void Awake()
     {
         terrainLayer = LayerMask.NameToLayer("Terrain");
-        playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
