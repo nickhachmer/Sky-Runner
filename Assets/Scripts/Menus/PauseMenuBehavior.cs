@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PauseMenuBehavior : MonoBehaviour
 {
-    
-
     public GameObject PauseMenu;
     public GameObject OptionsMenu;
 
@@ -19,32 +17,42 @@ public class PauseMenuBehavior : MonoBehaviour
     }
 
     void Start() {
-        PauseMenu.SetActive(false);
-        OptionsMenu.SetActive(false);
+        hidePauseMenu();
     }
 
 
     #region Pause Menu
 
-    public void PauseMenu_Button_Resume() {
-        PauseMenu.SetActive(false);
-    }
+        public void PauseMenu_Button_Resume() {
+            PauseMenu.SetActive(false);
+            GameManager.ResumeGame();
+        }
 
-    public void PauseMenu_Button_Options() {
-        MenuController.Transition(PauseMenu, OptionsMenu);
-    }
+        public void PauseMenu_Button_Options() {
+            MenuController.Transition(PauseMenu, OptionsMenu);
+        }
 
-    public void PauseMenu_Button_ExitToMenu() {
-        MenuController.LoadScene(0);
-    }
+        public void PauseMenu_Button_ExitToMenu() {
+            MenuController.LoadScene(0);
+        }
 
     #endregion
 
     #region Options Menu
 
-    public void OptionsMenu_Button_Back() {
-        MenuController.Transition(OptionsMenu, PauseMenu);
-    }
+        public void OptionsMenu_Button_Back() {
+            MenuController.Transition(OptionsMenu, PauseMenu);
+        }
 
     #endregion
+
+    public void showPauseMenu() {
+        PauseMenu.SetActive(true);
+        OptionsMenu.SetActive(false);
+    }
+
+    public void hidePauseMenu() {
+        PauseMenu.SetActive(false);
+        OptionsMenu.SetActive(false);
+    }
 }

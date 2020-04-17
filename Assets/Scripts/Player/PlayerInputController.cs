@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
-
-    // This script will eventually handle all of the inputs when playing the game
-
-    public GameObject pauseMenu;
-
     void Awake()
     {
-        if (pauseMenu == null) {
-            pauseMenu = GameObject.Find("PauseMenu");
-        }
     }
 
     
@@ -22,25 +14,11 @@ public class PlayerInputController : MonoBehaviour
         
         bool pauseButtonPressed = Input.GetKeyDown(KeyCode.Escape);
 
-        if (pauseButtonPressed) {
-            pauseGame();
+        if (pauseButtonPressed && !GameManager.isGamePaused) {
+            GameManager.PauseGame();
+        } else if (pauseButtonPressed && GameManager.isGamePaused) {
+            GameManager.ResumeGame();
         }
-
-        if (!pauseMenu.activeSelf) {
-            resumeGame();
-        }
-    }
-
-
-    private void pauseGame() {
-        //might be better implemented on the GameManager
-        Time.timeScale = 0f;
-        pauseMenu.SetActive(true);
-
-    }
-
-    private void resumeGame() {
-        Time.timeScale = 1f;
     }
 
 }
