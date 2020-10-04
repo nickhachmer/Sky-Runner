@@ -25,7 +25,7 @@ public class PauseMenuBehavior : MonoBehaviour
 
         public void PauseMenu_Button_Resume() {
             PauseMenu.SetActive(false);
-            GameManager.ResumeGame();
+            GameManager.Instance.ResumeGame();
         }
 
         public void PauseMenu_Button_Options() {

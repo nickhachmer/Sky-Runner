@@ -2,25 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager
 {
     private static GameManager instance;
     private static PauseMenuBehavior pauseMenu;
     public static bool isGamePaused;
+    
 
-    public static GameManager Instance {
-        get {
-            if (instance == null) {
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
                 instance = new GameManager();
-                DontDestroyOnLoad(instance);
             }
             return instance;
         }
     }
 
-    GameManager() {  }
-
-    public static void PauseGame() {
+    public void PauseGame() {
         Time.timeScale = 0f;
         isGamePaused = true;
         pauseMenu = GameObject.FindGameObjectWithTag("Canvas").GetComponent<PauseMenuBehavior>();
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void ResumeGame() {
+    public void ResumeGame() {
         Time.timeScale = 1f;
         isGamePaused = false;
         if (pauseMenu != null) {

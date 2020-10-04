@@ -5,17 +5,17 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     #region Player Enums
-
-    private enum DirectionFacing: int {
-        Right = 1,
-        Left = -1
-    }
-
-    private enum MovementState: short {
+    public enum MovementState : short
+    {
         Default = 0,
         JumpActive = 1,
         DashActive = 2,
         SlingShotActive = 3
+    }
+
+    private enum DirectionFacing: int {
+        Right = 1,
+        Left = -1
     }
 
     #endregion
@@ -55,16 +55,11 @@ public class PlayerMovementController : MonoBehaviour
   
     private float axisBuffer = 0.2f;
     private float gravityScale;
-    private DirectionFacing currentDirectionFacing = DirectionFacing.Right;
-    private MovementState currentMovementState = MovementState.Default;
-
+    private DirectionFacing currentDirectionFacing;
+    private MovementState currentMovementState;
     #endregion
 
-    /**
-    * Awake is called once during liftime of script instance
-    * 
-    * Used for intialization
-    */ 
+
     void Awake() {
         terrainLayer = LayerMask.NameToLayer("Terrain");
         boxCollider = GetComponent<BoxCollider2D>();
@@ -72,36 +67,30 @@ public class PlayerMovementController : MonoBehaviour
         gravityScale = rigidbody.gravityScale;
     }
     
-    /**
-    * Start is called before the first frame update
-    */
     void Start()
-    {   
-        
+    {
+        currentDirectionFacing = DirectionFacing.Right;
+        currentMovementState = MovementState.Default;
     }
 
     /** 
-    * Update is called once per frame
-    *
     * Capture inputs and determine current movement state
     */
     void Update()
     {
         // Check if on ground or wall
         CheckTouchingTerrain();
-        
-        // dash resets when player touches ground or wall
-        if (onGround || onWall) {
-            canDash = true;
-        }
 
-        // wall climb resets when player touches ground
-        if (onGround) {
+        // dash resets and wall climb when player touches ground
+        if (onGround) 
+        {
+            canDash = true;
             canWallClimb = true;
         }
 
         // turn gravity back on when done sling shot
-        if (!slingShotActive) {
+        if (!slingShotActive) 
+        {
             rigidbody.gravityScale = gravityScale;
         }
 
@@ -111,29 +100,43 @@ public class PlayerMovementController : MonoBehaviour
         bool jumpKeyPressed = Input.GetButtonDown("Jump");
         bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
         bool slingShotPressed = Input.GetKeyDown(KeyCode.F);
-        
-        if (slingShotPressed && isOrbActive) {
+        bool pauseButtonPressed = Input.GetKeyDown(KeyCode.Escape);
+
+        if (pauseButtonPressed && !GameManager.isGamePaused)
+        {
+            GameManager.Instance.PauseGame();
+        }
+        else if (pauseButtonPressed && GameManager.isGamePaused)
+        {
+            GameManager.Instance.ResumeGame();
+        } 
+        else if (slingShotPressed && isOrbActive) 
+        {
             currentMovementState = MovementState.SlingShotActive;
-        } else if (jumpKeyPressed) {
+        } 
+        else if (jumpKeyPressed) 
+        {
             slingShotActive = false;
             currentMovementState = MovementState.JumpActive;
-        } else if (dashKeyPressed && canDash) {
+        } 
+        else if (dashKeyPressed && canDash) 
+        {
+            slingShotActive = false;
             currentMovementState = MovementState.DashActive;
             canDash = false;
         }
     }
 
     /**
-    * FixedUpdate is called once every 0.02 sec
-    * 
     * Determine which physics movement operations to execture based on current movement states
     */
     void FixedUpdate() {
         switch (currentMovementState) {
             case MovementState.DashActive: Horizontal_Dash(); break;
             case MovementState.JumpActive: Vertical_Jump(); break;
-            case MovementState.SlingShotActive: Omnidirectional_SlingShot(); break;
-            case MovementState.Default: {
+            case MovementState.SlingShotActive: SlingShot(); break;
+            case MovementState.Default: 
+            {
                 Horizontal_Move();
                 Vertical_Move(); 
                 break;
@@ -200,7 +203,7 @@ public class PlayerMovementController : MonoBehaviour
     * Determine which vertical movement should be executed
     */
     private void Vertical_Move() {
-        if (verticalAxis > 0 &&  onWall) {
+        if (verticalAxis > 0 && onWall) {
             Vertical_WallClimb();
         } else if (verticalAxis < 0 && !onWall && !onGround) {
             Vertical_AccelerateDown();
@@ -224,7 +227,7 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    private void Omnidirectional_SlingShot() {
+    private void SlingShot() {
         if (isOrbActive) {
             if (!slingShotActive) {
                 jumpCounter = 0;
