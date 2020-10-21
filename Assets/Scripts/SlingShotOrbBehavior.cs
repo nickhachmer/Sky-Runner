@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SlingShotOrbBehavior : MonoBehaviour
 {
-    
     public bool isActive = false;
 
     private short orbRange = 10;

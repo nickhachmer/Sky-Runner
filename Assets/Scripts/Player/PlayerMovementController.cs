@@ -100,6 +100,7 @@ public class PlayerMovementController : MonoBehaviour
         bool jumpKeyPressed = Input.GetButtonDown("Jump");
         bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
         bool slingShotPressed = Input.GetKeyDown(KeyCode.F);
+        bool slingShotReleased = Input.GetKeyUp(KeyCode.F);
         bool pauseButtonPressed = Input.GetKeyDown(KeyCode.Escape);
 
         if (pauseButtonPressed && !GameManager.isGamePaused)
@@ -109,11 +110,16 @@ public class PlayerMovementController : MonoBehaviour
         else if (pauseButtonPressed && GameManager.isGamePaused)
         {
             GameManager.Instance.ResumeGame();
-        } 
+        }
         else if (slingShotPressed && isOrbActive) 
         {
             currentMovementState = MovementState.SlingShotActive;
-        } 
+        }
+        else if (slingShotReleased)
+        {
+            slingShotActive = false;
+            currentMovementState = MovementState.Default;
+        }
         else if (jumpKeyPressed) 
         {
             slingShotActive = false;
