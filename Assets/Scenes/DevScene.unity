@@ -856,11 +856,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f97a7c0604b5a14cbbdf6ad93ccc174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 440525196}
-  rigidbody: {fileID: 440525195}
-  speed: 22
-  jumpForce: 1000
-  downForce: 50
+  _boxCollider: {fileID: 0}
+  _rigidbody: {fileID: 0}
+  _speed: 22
+  _jumpForce: 1000
+  _downForce: 50
 --- !u!50 &440525195
 Rigidbody2D:
   serializedVersion: 4

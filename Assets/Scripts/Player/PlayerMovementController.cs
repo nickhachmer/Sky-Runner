@@ -23,16 +23,16 @@ public class PlayerMovementController : MonoBehaviour
     #region PlayerMovement Variables
 
     // public player values set in editor
-    public BoxCollider2D boxCollider;
-    public new Rigidbody2D rigidbody;
-    public int speed;
-    public int jumpForce; 
-    public int downForce;
+    [SerializeField] private BoxCollider2D _boxCollider = default;
+    [SerializeField] private new Rigidbody2D _rigidbody = default;
+    [SerializeField] private int _speed = default;
+    [SerializeField] private int _jumpForce = default; 
+    [SerializeField] private int _downForce = default;
 
     // private player values
-    private LayerMask terrainLayer;
-    private Vector3 activeOrbPosition = new Vector3(0, 0, 0);
-    private bool isOrbActive = false;
+    private LayerMask _terrainLayer;
+    private Vector3 _activeOrbPosition = new Vector3(0, 0, 0);
+    private bool _isOrbActive = false;
 
     private float horizontalAxis = 0;
     private float verticalAxis = 0;
@@ -61,10 +61,10 @@ public class PlayerMovementController : MonoBehaviour
 
 
     void Awake() {
-        terrainLayer = LayerMask.NameToLayer("Terrain");
-        boxCollider = GetComponent<BoxCollider2D>();
-        rigidbody = GetComponent<Rigidbody2D>();
-        gravityScale = rigidbody.gravityScale;
+        _terrainLayer = LayerMask.NameToLayer("Terrain");
+        _boxCollider = GetComponent<BoxCollider2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        gravityScale = _rigidbody.gravityScale;
     }
     
     void Start()
@@ -91,7 +91,7 @@ public class PlayerMovementController : MonoBehaviour
         // turn gravity back on when done sling shot
         if (!slingShotActive) 
         {
-            rigidbody.gravityScale = gravityScale;
+            _rigidbody.gravityScale = gravityScale;
         }
 
         horizontalAxis = Mathf.Abs(Input.GetAxisRaw("Horizontal")) > axisBuffer? Input.GetAxisRaw("Horizontal") : 0;
@@ -111,7 +111,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             GameManager.Instance.ResumeGame();
         }
-        else if (slingShotPressed && isOrbActive) 
+        else if (slingShotPressed && _isOrbActive) 
         {
             currentMovementState = MovementState.SlingShotActive;
         }
@@ -159,15 +159,15 @@ public class PlayerMovementController : MonoBehaviour
 
         UpdateDirectionFacing();
 
-        rigidbody.AddForce(new Vector2(horizontalAxis * speed, 0));
+        _rigidbody.AddForce(new Vector2(horizontalAxis * _speed, 0));
     }
 
     /**
     * Gives the player quick burst of horizontal movement in the direction the player is facing over a fixed time interval
     */
     private void Horizontal_Dash() {
-        rigidbody.velocity = new Vector2(0, 0);
-        rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * jumpForce, 10));
+        _rigidbody.velocity = new Vector2(0, 0);
+        _rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * _jumpForce, 10));
         currentMovementState = MovementState.Default;
     }
     
@@ -187,8 +187,8 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         if (jumpCounter < maxJumps) {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);
-            rigidbody.AddForce(new Vector2(0, jumpForce));
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+            _rigidbody.AddForce(new Vector2(0, _jumpForce));
             jumpCounter++;
         }
 
@@ -199,8 +199,8 @@ public class PlayerMovementController : MonoBehaviour
     * Accelerate the player away from the wall in an upward direction
     */
     private void Vertical_WallJump() {
-        rigidbody.velocity = new Vector2(0, 0);
-        rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * jumpForce, jumpForce));
+        _rigidbody.velocity = new Vector2(0, 0);
+        _rigidbody.AddForce(new Vector2(((float) currentDirectionFacing) * _jumpForce, _jumpForce));
         jumpCounter = 1;
         currentMovementState = MovementState.Default;
     }
@@ -220,7 +220,7 @@ public class PlayerMovementController : MonoBehaviour
     * Makes player fall faster
     */
     private void Vertical_AccelerateDown() {
-        rigidbody.AddForce(new Vector2(0, -downForce));
+        _rigidbody.AddForce(new Vector2(0, -_downForce));
     }
 
     /**
@@ -228,22 +228,22 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Vertical_WallClimb() {
         if (canWallClimb) {
-            rigidbody.AddForce(new Vector2(0, jumpForce));
+            _rigidbody.AddForce(new Vector2(0, _jumpForce));
             canWallClimb = false;
         }
     }
 
     private void SlingShot() {
-        if (isOrbActive) {
+        if (_isOrbActive) {
             if (!slingShotActive) {
                 jumpCounter = 0;
                 slingShotActive = true;
-                rigidbody.gravityScale = 0;
+                _rigidbody.gravityScale = 0;
             }
 
-            Vector2 direction = (activeOrbPosition - transform.position).normalized;
+            Vector2 direction = (_activeOrbPosition - transform.position).normalized;
             
-            rigidbody.AddForce(direction * 150);
+            _rigidbody.AddForce(direction * 150);
         }
     }
 
@@ -256,10 +256,10 @@ public class PlayerMovementController : MonoBehaviour
     {
         // max distance from the collider in which to register a collision
         float touchingGroundBuffer = 0.1f;
-        int layerValue = 1 << terrainLayer.value;
+        int layerValue = 1 << _terrainLayer.value;
 
         // creates small area just underneath the Player Collider and checks if any object on the terrain layer is inside this area
-        onGround = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, layerValue);
+        onGround = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, layerValue);
         
         // onGround take priority over onWall;
         if (onGround) {
@@ -267,8 +267,8 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         // creates small area just to the left and right of the Player Collider and checks if any object on the terrain layer is inside this area
-        onLeftWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, layerValue);
-        onRightWall = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, layerValue);
+        onLeftWall = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, layerValue);
+        onRightWall = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, layerValue);
 
         UpdateDirectionFacing();
 
@@ -300,8 +300,8 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     public void SetActiveOrb(bool isActive, Vector3 activeOrbPos) {
-        isOrbActive = isActive;
-        activeOrbPosition = activeOrbPos;
+        _isOrbActive = isActive;
+        _activeOrbPosition = activeOrbPos;
     }
     
 }
