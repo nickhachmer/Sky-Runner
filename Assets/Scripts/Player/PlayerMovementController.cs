@@ -276,7 +276,6 @@ public class PlayerMovementController : MonoBehaviour
 
         // creates small area just underneath the Player Collider and checks if any object on the terrain layer is inside this area
         _onGround = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, layerValue);
-        UnityEngine.Debug.Log("_onGround");
 
         // onGround take priority over onWall;
         if (_onGround) {
