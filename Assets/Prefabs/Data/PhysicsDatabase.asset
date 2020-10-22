@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb0f2fa5f6a0473883593c2e7bd25a4, type: 3}
   m_Name: PhysicsDatabase
   m_EditorClassIdentifier: 
-  objectName: New MyScriptableObject
-  colorIsRandom: 0
+  _gravityScale: 3
+  _playerMass: 1
+  _playerAngularDrag: 0.05
+  _playerLinearDrag: 2.5
+  _playerSpeed: 22
+  _playerJumpForce: 1000
+  _playerDownForce: 50
+  _orbForceMultiplier: 150
+  _orbRange: 10

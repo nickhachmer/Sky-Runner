@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class SlingShotOrbBehavior : MonoBehaviour
 {
-    public bool isActive = false;
+    [SerializeField] private PhysicsDatabase _physicsDatabase = default;
+    [SerializeField] private string _terrainLayerName = default;
+    [SerializeField] private PlayerMovementController _playerMovementController = default;
 
-    private short orbRange = 10;
-    private Transform playerTransform;
-    private PlayerMovementController playerMovementScript;
-    private LayerMask terrainLayer;
+    private Transform _playerTransform;
+    private LayerMask _terrainLayer;
+    private short _orbRange = default;
+    private bool _isActive = false;
 
     void Awake()
     {
-        terrainLayer = LayerMask.NameToLayer("Terrain");
-        playerMovementScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        _terrainLayer = LayerMask.NameToLayer(_terrainLayerName);
+        _orbRange = _physicsDatabase.OrbRange;
+        _playerTransform = _playerMovementController.Transform;
     }
 
     void Update()
     {
-        
         // requires refactor only need to send the position once per active - this does it every frame
 
-        bool isTerrainInBetween = Physics2D.Linecast(transform.position, playerTransform.position, 1 << terrainLayer.value);
+        bool isTerrainInBetween = Physics2D.Linecast(transform.position, _playerTransform.position, 1 << _terrainLayer.value);
 
-        if (!isTerrainInBetween && Vector2.Distance(transform.position, playerTransform.position) < orbRange) {
-            isActive = true;
-            playerMovementScript.SetActiveOrb(true, transform.position);
+        if (!isTerrainInBetween && Vector2.Distance(transform.position, _playerTransform.position) < _orbRange) {
+            _isActive = true;
+            _playerMovementController.SetActiveOrb(true, transform.position);
         } else {
-            isActive = false;
-            playerMovementScript.SetActiveOrb(false, new Vector3(0, 0, 0));
+            _isActive = false;
+            _playerMovementController.SetActiveOrb(false, new Vector3(0, 0, 0));
         }
 
 
