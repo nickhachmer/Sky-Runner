@@ -15,7 +15,7 @@ MonoBehaviour:
   _gravityScale: 3
   _playerMass: 1
   _playerAngularDrag: 0.05
-  _playerLinearDrag: 2.5
+  _playerLinearDrag: 1.5
   _playerSpeed: 22
   _playerJumpForce: 1000
   _playerDownForce: 50

@@ -27,7 +27,8 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidBody = default;
     [SerializeField] private Transform _transform = default;
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
-    [SerializeField] private string _terrainLayerName = default;
+    [SerializeField] private LayerMask _terrainLayer = default;
+    [SerializeField] private LayerMask _harmLayer = default;
     [SerializeField] private int _maxJumps = 2;
 
     // public properties
@@ -41,7 +42,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private int _orbForceMultiplier = default;
 
-    private LayerMask _terrainLayer = default;
     private Vector3 _activeOrbPosition = new Vector3(0, 0, 0);
     private bool _isOrbActive = false;
 
@@ -66,10 +66,11 @@ public class PlayerMovementController : MonoBehaviour
   
     private DirectionFacing _currentDirectionFacing = default;
     private MovementState _currentMovementState = default;
+
+    private Vector3 _startPosition = default;
     #endregion
 
     void Awake() {
-        _terrainLayer = LayerMask.NameToLayer(_terrainLayerName);
         _speed = _physicsDatabase.PlayerSpeed;
         _jumpForce = _physicsDatabase.PlayerJumpForce;
         _downForce = _physicsDatabase.PlayerDownForce;
@@ -81,6 +82,8 @@ public class PlayerMovementController : MonoBehaviour
         _rigidBody.mass = _physicsDatabase.PlayerMass;
 
         _orbForceMultiplier = _physicsDatabase.OrbForceMultiplier;
+
+        _startPosition = Vector3.zero;
     }
     
     void Start()
@@ -94,6 +97,9 @@ public class PlayerMovementController : MonoBehaviour
     */
     void Update()
     {
+        
+        if (_transform.position.y < -10) { died(); }
+
         // Check if on ground or wall
         CheckTouchingTerrain();
 
@@ -330,5 +336,19 @@ public class PlayerMovementController : MonoBehaviour
         }
         _isOrbActive = isActive;
     }
-    
+
+    private void died()
+    {
+        _transform.position = _startPosition;
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if ((1 << col.gameObject.layer) == _harmLayer.value)
+        {
+            died();
+            Debug.Log("Player died");
+        }
+    }
+
 }
