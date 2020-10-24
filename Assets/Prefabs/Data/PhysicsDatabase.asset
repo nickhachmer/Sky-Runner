@@ -20,4 +20,4 @@ MonoBehaviour:
   _playerJumpForce: 1000
   _playerDownForce: 50
   _orbForceMultiplier: 150
-  _orbRange: 10
+  _orbRange: 6

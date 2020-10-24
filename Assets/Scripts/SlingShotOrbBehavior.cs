@@ -36,10 +36,10 @@ public class SlingShotOrbBehavior : MonoBehaviour
             _isActive = true;
             _playerMovementController.SetActiveOrb(true, transform.position);
         }
-        else
+        else if (_isActive)
         {
             _isActive = false;
-            _playerMovementController.SetActiveOrb(false, new Vector3(0, 0, 0));
+            _playerMovementController.SetActiveOrb(false, Vector3.zero);
         }
 
     }

@@ -147,6 +147,12 @@ public class PlayerMovementController : MonoBehaviour
             _currentMovementState = MovementState.DashActive;
             _canDash = false;
         }
+
+        if (_isOrbActive)
+        {
+            Debug.DrawLine(_activeOrbPosition, _transform.position, Color.red);
+        }
+
     }
 
     /**
@@ -316,8 +322,13 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     public void SetActiveOrb(bool isActive, Vector3 activeOrbPos) {
+        var distanceToCurrentOrb = Vector2.Distance(_activeOrbPosition, _transform.position);
+        var distanceToNewOrb = Vector2.Distance(activeOrbPos, _transform.position);
+        if (_activeOrbPosition.Equals(Vector3.zero) || distanceToNewOrb.CompareTo(distanceToCurrentOrb) <= 0)
+        {
+            _activeOrbPosition = activeOrbPos;
+        }
         _isOrbActive = isActive;
-        _activeOrbPosition = activeOrbPos;
     }
     
 }
