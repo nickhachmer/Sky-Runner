@@ -7,6 +7,7 @@ public class SlingShotOrbBehavior : MonoBehaviour
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
     [SerializeField] private string _terrainLayerName = default;
     [SerializeField] private PlayerMovementController _playerMovementController = default;
+    [SerializeField] private Transform _orbRangeIndicator = default;
 
     private Transform _playerTransform;
     private LayerMask _terrainLayer;
@@ -16,8 +17,12 @@ public class SlingShotOrbBehavior : MonoBehaviour
     void Awake()
     {
         _terrainLayer = LayerMask.NameToLayer(_terrainLayerName);
+        
         _orbRange = _physicsDatabase.OrbRange;
+        _orbRangeIndicator.localScale = new Vector3(4 * _orbRange, 4 * _orbRange, 1);
+
         _playerTransform = _playerMovementController.Transform;
+
     }
 
     void Update()
@@ -26,14 +31,16 @@ public class SlingShotOrbBehavior : MonoBehaviour
 
         bool isTerrainInBetween = Physics2D.Linecast(transform.position, _playerTransform.position, 1 << _terrainLayer.value);
 
-        if (!isTerrainInBetween && Vector2.Distance(transform.position, _playerTransform.position) < _orbRange) {
+        if (!isTerrainInBetween && Vector2.Distance(transform.position, _playerTransform.position) < _orbRange)
+        {
             _isActive = true;
             _playerMovementController.SetActiveOrb(true, transform.position);
-        } else {
+        }
+        else
+        {
             _isActive = false;
             _playerMovementController.SetActiveOrb(false, new Vector3(0, 0, 0));
         }
-
 
     }
 }

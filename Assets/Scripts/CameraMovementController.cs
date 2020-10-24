@@ -5,16 +5,17 @@ using UnityEngine;
 public class CameraMovementController : MonoBehaviour
 {
     
-    public Transform playerTransform;
+    [SerializeField] private Transform _playerTransform = default;
+    [SerializeField] private Camera _cameraComponent = default;
     
-    private Camera cameraComponent;
-    private short screenBufferY = 7;
-    private short screenBufferX = 10;
-    
+    private short _screenBufferY = 7;
+    private short _screenBufferX = 10;
+    private short _orthographicSize = 10;
+    private short _zPosition = -10;
+
     void Awake()
     {
-        cameraComponent = GetComponent<Camera>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        _cameraComponent.orthographicSize = _orthographicSize;
     }
     void Update()
     {
@@ -22,23 +23,29 @@ public class CameraMovementController : MonoBehaviour
         // Keeps player sprite within screen, but does not directly follow
         float x = transform.position.x;
         float y = transform.position.y;
-        float diffX = playerTransform.position.x - x;
-        float diffY = playerTransform.position.y - y;
+        float diffX = _playerTransform.position.x - x;
+        float diffY = _playerTransform.position.y - y;
 
-        if (diffX > screenBufferX) {
-            x = playerTransform.position.x - screenBufferX;
-        } else if (diffX < -screenBufferX) {
-            x = playerTransform.position.x + screenBufferX;
+        if (diffX > _screenBufferX)
+        {
+            x = _playerTransform.position.x - _screenBufferX;
+        }
+        else if (diffX < -_screenBufferX)
+        {
+            x = _playerTransform.position.x + _screenBufferX;
         }
 
-        if (diffY > screenBufferY) {
-            y = playerTransform.position.y - screenBufferY;
-        } else if (diffY < -screenBufferY) {
-            y = playerTransform.position.y + screenBufferY;
+        if (diffY > _screenBufferY)
+        {
+            y = _playerTransform.position.y - _screenBufferY;
+        }
+        else if (diffY < -_screenBufferY)
+        {
+            y = _playerTransform.position.y + _screenBufferY;
         }
 
 
-        transform.position = new Vector3(x, y, -10);
+        transform.position = new Vector3(x, y, _zPosition);
     }
 
 
