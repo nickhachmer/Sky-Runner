@@ -26,6 +26,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private Rigidbody2D _rigidBody = default;
     [SerializeField] private Transform _transform = default;
+    [SerializeField] private Animator _animator = default;
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _harmLayer = default;
@@ -97,11 +98,13 @@ public class PlayerMovementController : MonoBehaviour
     */
     void Update()
     {
-        
+        // TODO: need to make "-10" a SerializeField entry or constant (no magic numbers in the code!)
         if (_transform.position.y < -10) { died(); }
 
         // Check if on ground or wall
         CheckTouchingTerrain();
+
+        UnityEngine.Debug.Log(_onGround);
 
         // dash resets and wall climb when player touches ground
         if (_onGround) 
@@ -187,7 +190,11 @@ public class PlayerMovementController : MonoBehaviour
 
         UpdateDirectionFacing();
 
-        _rigidBody.AddForce(new Vector2(_horizontalAxis * _speed, 0));
+        var force = _horizontalAxis * _speed;
+
+        _rigidBody.AddForce(new Vector2(force, 0));
+
+        _animator.SetFloat("Speed", Mathf.Abs(force));
     }
 
     /**
@@ -219,6 +226,8 @@ public class PlayerMovementController : MonoBehaviour
             _rigidBody.AddForce(new Vector2(0, _jumpForce));
             _jumpCounter++;
         }
+
+        _animator.SetBool("IsJumping", true);
 
         _currentMovementState = MovementState.Default;
     }
@@ -291,6 +300,7 @@ public class PlayerMovementController : MonoBehaviour
 
         // onGround take priority over onWall;
         if (_onGround) {
+            _animator.SetBool("IsJumping", false);
             return;
         }
 
