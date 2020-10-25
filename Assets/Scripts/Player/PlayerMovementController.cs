@@ -264,7 +264,7 @@ public class PlayerMovementController : MonoBehaviour
     private void SlingShot() {
         if (_isOrbActive) {
             if (!_slingShotActive) {
-                _jumpCounter = 0;
+                _jumpCounter = 1;
                 _slingShotActive = true;
                 _rigidBody.gravityScale = 0;
             }
@@ -284,10 +284,9 @@ public class PlayerMovementController : MonoBehaviour
     {
         // max distance from the collider in which to register a collision
         float touchingGroundBuffer = 0.1f;
-        int layerValue = 1 << _terrainLayer.value;
 
         // creates small area just underneath the Player Collider and checks if any object on the terrain layer is inside this area
-        _onGround = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, layerValue);
+        _onGround = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, touchingGroundBuffer, _terrainLayer.value);     
 
         // onGround take priority over onWall;
         if (_onGround) {
@@ -295,14 +294,14 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         // creates small area just to the left and right of the Player Collider and checks if any object on the terrain layer is inside this area
-        _onLeftWall = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, layerValue);
-        _onRightWall = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, layerValue);
+        _onLeftWall = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.left, touchingGroundBuffer, _terrainLayer.value);
+        _onRightWall = Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.right, touchingGroundBuffer, _terrainLayer.value);
 
         UpdateDirectionFacing();
 
-        //Debug.DrawRay(boxCollider.bounds.center, Vector2.down * boxCollider.bounds.size, Color.green);
-        //Debug.Log("On ground: " + onGround);
-        //Debug.Log("On wall: " + onWall);
+        //Debug.DrawRay(_boxCollider.bounds.center, Vector2.down * _boxCollider.bounds.size, Color.green);
+        //Debug.Log("On ground: " + _onGround);
+        //Debug.Log("On wall: " + _onWall);
     }
 
     /**

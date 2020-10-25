@@ -8,8 +8,8 @@ public class CameraMovementController : MonoBehaviour
     [SerializeField] private Transform _playerTransform = default;
     [SerializeField] private Camera _cameraComponent = default;
     
-    private short _screenBufferY = 7;
-    private short _screenBufferX = 10;
+    private short _screenBufferY = 2;
+    private short _screenBufferX = 5;
     private short _orthographicSize = 10;
     private short _zPosition = -10;
 
