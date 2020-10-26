@@ -178,5 +178,10 @@ MonoBehaviour:
   _rigidBody: {fileID: 563652229875410449}
   _transform: {fileID: 3303254248461885368}
   _physicsDatabase: {fileID: 11400000, guid: 1b0f23822166c41efbb1ee94b436103d, type: 2}
-  _terrainLayerName: Terrain
+  _terrainLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _harmLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   _maxJumps: 2
