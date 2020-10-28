@@ -79,7 +79,7 @@ SpriteRenderer:
   m_Size: {x: 0.19, y: 0.29}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3303254248461885369
@@ -93,9 +93,10 @@ GameObject:
   - component: {fileID: 6334050541407500445}
   - component: {fileID: 3638607712192544257}
   - component: {fileID: 563652229875410449}
-  - component: {fileID: 6077714056197110749}
   - component: {fileID: 5190170310222545917}
   - component: {fileID: 4293022734441970225}
+  - component: {fileID: 6077714056197110749}
+  - component: {fileID: 3230068225902034217}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -131,10 +132,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.095, y: 0.145}
+  m_Offset: {x: 0, y: 0.145}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 1, y: 0}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.19, y: 0.29}
     newSize: {x: 0.19, y: 0.29}
     adaptiveTilingThreshold: 0.5
@@ -165,30 +166,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &6077714056197110749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3303254248461885369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f97a7c0604b5a14cbbdf6ad93ccc174, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _boxCollider: {fileID: 3638607712192544257}
-  _rigidBody: {fileID: 563652229875410449}
-  _transform: {fileID: 6334050541407500445}
-  _animator: {fileID: 5190170310222545917}
-  _physicsDatabase: {fileID: 11400000, guid: 1b0f23822166c41efbb1ee94b436103d, type: 2}
-  _terrainLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _harmLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _maxJumps: 2
 --- !u!95 &5190170310222545917
 Animator:
   serializedVersion: 3
@@ -247,7 +224,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7625406061393645561, guid: 6599a6d1c47cf4773bb1af738db142b5,
+  m_Sprite: {fileID: 8356132527015889134, guid: 6599a6d1c47cf4773bb1af738db142b5,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -259,3 +236,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6077714056197110749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3303254248461885369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f97a7c0604b5a14cbbdf6ad93ccc174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boxCollider: {fileID: 3638607712192544257}
+  _rigidBody: {fileID: 563652229875410449}
+  _transform: {fileID: 6334050541407500445}
+  _animation: {fileID: 3230068225902034217}
+  _physicsDatabase: {fileID: 11400000, guid: 1b0f23822166c41efbb1ee94b436103d, type: 2}
+  _terrainLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _harmLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _maxJumps: 2
+--- !u!114 &3230068225902034217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3303254248461885369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 537cbcf9b59ca467196ecf8d751a2f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boxCollider: {fileID: 3638607712192544257}
+  _rigidBody: {fileID: 563652229875410449}
+  _animator: {fileID: 5190170310222545917}

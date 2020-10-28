@@ -5,6 +5,9 @@ TextureImporter:
   - first:
       213: -7625406061393645561
     second: adventurer-idle-00
+  - first:
+      213: 8356132527015889134
+    second: adventurer-idle-00_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -90,22 +93,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: adventurer-idle-00
+      name: adventurer-idle-00_0
       rect:
         serializedVersion: 2
         x: 14
         y: 1
         width: 19
         height: 29
-      alignment: 8
-      pivot: {x: 1, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 700758a969d1d2690800000000000000
-      internalID: -7625406061393645561
+      spriteID: ee88ed8b242f6f370800000000000000
+      internalID: 8356132527015889134
       vertices: []
       indices: 
       edges: []

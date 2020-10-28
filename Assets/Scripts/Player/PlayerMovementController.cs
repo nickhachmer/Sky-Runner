@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,19 @@ public class PlayerMovementController : MonoBehaviour
         SlingShotActive = 3
     }
 
-    private enum DirectionFacing: int {
+    private enum DirectionFacing: int
+    {
         Right = 1,
         Left = -1
+    }
+
+    private enum SurfaceMapping : int 
+    {
+        Death = 0,
+        Orb = 1,
+        Ground = 2,
+        Wall = 3,
+        Air = 4
     }
 
     #endregion
@@ -26,7 +37,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private Rigidbody2D _rigidBody = default;
     [SerializeField] private Transform _transform = default;
-    [SerializeField] private Animator _animator = default;
+    [SerializeField] private PlayerAnimationController _animation = default;
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _harmLayer = default;
@@ -64,6 +75,7 @@ public class PlayerMovementController : MonoBehaviour
             return _onLeftWall || _onRightWall;
         }
     }
+    private bool _fPressed = false;
   
     private DirectionFacing _currentDirectionFacing = default;
     private MovementState _currentMovementState = default;
@@ -71,7 +83,14 @@ public class PlayerMovementController : MonoBehaviour
     private Vector3 _startPosition = default;
     #endregion
 
-    void Awake() {
+    #region Player Actions
+
+    private Action<bool, bool, bool, bool> UpdateAnimationState = default;
+    private Action DeathAnimation = default;
+
+    #endregion
+
+    private void Awake() {
         _speed = _physicsDatabase.PlayerSpeed;
         _jumpForce = _physicsDatabase.PlayerJumpForce;
         _downForce = _physicsDatabase.PlayerDownForce;
@@ -85,9 +104,12 @@ public class PlayerMovementController : MonoBehaviour
         _orbForceMultiplier = _physicsDatabase.OrbForceMultiplier;
 
         _startPosition = Vector3.zero;
+
+        UpdateAnimationState += _animation.SetAnimationState;
+        DeathAnimation += _animation.SetDeathState;
     }
     
-    void Start()
+    private void Start()
     {
         _currentDirectionFacing = DirectionFacing.Right;
         _currentMovementState = MovementState.Default;
@@ -96,15 +118,13 @@ public class PlayerMovementController : MonoBehaviour
     /** 
     * Capture inputs and determine current movement state
     */
-    void Update()
+    private void Update()
     {
         // TODO: need to make "-10" a SerializeField entry or constant (no magic numbers in the code!)
-        if (_transform.position.y < -10) { died(); }
+        if (_transform.position.y < -10) { Died(); }
 
         // Check if on ground or wall
         CheckTouchingTerrain();
-
-        UnityEngine.Debug.Log(_onGround);
 
         // dash resets and wall climb when player touches ground
         if (_onGround) 
@@ -127,6 +147,15 @@ public class PlayerMovementController : MonoBehaviour
         bool slingShotPressed = Input.GetKeyDown(KeyCode.F);
         bool slingShotReleased = Input.GetKeyUp(KeyCode.F);
         bool pauseButtonPressed = Input.GetKeyDown(KeyCode.Escape);
+
+        if (slingShotPressed)
+        {
+            _fPressed = true;
+        }
+        else if (slingShotReleased)
+        {
+            _fPressed = false;
+        }
 
         if (pauseButtonPressed && !GameManager.isGamePaused)
         {
@@ -162,12 +191,13 @@ public class PlayerMovementController : MonoBehaviour
             Debug.DrawLine(_activeOrbPosition, _transform.position, Color.red);
         }
 
+        UpdateAnimationState(_onGround, _onWall, _fPressed, _isOrbActive);
     }
 
     /**
     * Determine which physics movement operations to execture based on current movement states
     */
-    void FixedUpdate() {
+    private void FixedUpdate() {
         switch (_currentMovementState) {
             case MovementState.DashActive: Horizontal_Dash(); break;
             case MovementState.JumpActive: Vertical_Jump(); break;
@@ -181,6 +211,12 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        UpdateAnimationState -= _animation.SetAnimationState;
+        DeathAnimation -= _animation.SetDeathState;
+    }
+
     #region Movement Methods
 
     /**
@@ -190,11 +226,9 @@ public class PlayerMovementController : MonoBehaviour
 
         UpdateDirectionFacing();
 
-        var force = _horizontalAxis * _speed;
+        var velocity = _horizontalAxis * _speed;
 
-        _rigidBody.AddForce(new Vector2(force, 0));
-
-        _animator.SetFloat("Speed", Mathf.Abs(force));
+        _rigidBody.AddForce(new Vector2(velocity, 0));
     }
 
     /**
@@ -202,7 +236,7 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Horizontal_Dash() {
         _rigidBody.velocity = new Vector2(0, 0);
-        _rigidBody.AddForce(new Vector2(((float) _currentDirectionFacing) * _jumpForce, 10));
+        _rigidBody.AddForce(new Vector2(((float) _currentDirectionFacing) * _jumpForce, 10)); // put this "10" in the physicsDatabase
         _currentMovementState = MovementState.Default;
     }
     
@@ -226,8 +260,6 @@ public class PlayerMovementController : MonoBehaviour
             _rigidBody.AddForce(new Vector2(0, _jumpForce));
             _jumpCounter++;
         }
-
-        _animator.SetBool("IsJumping", true);
 
         _currentMovementState = MovementState.Default;
     }
@@ -299,7 +331,6 @@ public class PlayerMovementController : MonoBehaviour
 
         // onGround take priority over onWall;
         if (_onGround) {
-            _animator.SetBool("IsJumping", false);
             return;
         }
 
@@ -346,8 +377,10 @@ public class PlayerMovementController : MonoBehaviour
         _isOrbActive = isActive;
     }
 
-    private void died()
+    private void Died()
     {
+        // probably wait until death animation is finished before setting _transform.position
+        DeathAnimation();
         _transform.position = _startPosition;
     }
 
@@ -355,9 +388,8 @@ public class PlayerMovementController : MonoBehaviour
     {
         if ((1 << col.gameObject.layer) == _harmLayer.value)
         {
-            died();
+            Died();
             Debug.Log("Player died");
         }
     }
-
 }
