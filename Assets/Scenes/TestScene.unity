@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &53799270 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6334050541407500445, guid: c8e9827dce7924ac699842c63d5943c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1279410380}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &281977082
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +425,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &434165096
 MonoBehaviour:
@@ -433,7 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2246786afab574ca2da4c932cf4050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTransform: {fileID: 1279410381}
+  _playerTransform: {fileID: 53799270}
   _cameraComponent: {fileID: 434165094}
 --- !u!1 &516080527
 GameObject:
@@ -1577,6 +1583,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerObject
       objectReference: {fileID: 0}
+    - target: {fileID: 5190170310222545917, guid: c8e9827dce7924ac699842c63d5943c8,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 064a32146fe6f4bb2b1dbf5f6a7a0e18, type: 2}
     - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
       propertyPath: _harmLayerName
@@ -1594,12 +1605,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8e9827dce7924ac699842c63d5943c8, type: 3}
---- !u!4 &1279410381 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3303254248461885368, guid: c8e9827dce7924ac699842c63d5943c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 1279410380}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1362941705
 GameObject:
   m_ObjectHideFlags: 0

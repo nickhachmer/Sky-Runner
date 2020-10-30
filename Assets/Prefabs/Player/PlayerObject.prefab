@@ -274,4 +274,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 3638607712192544257}
   _rigidBody: {fileID: 563652229875410449}
+  _spriteRenderer: {fileID: 4293022734441970225}
   _animator: {fileID: 5190170310222545917}

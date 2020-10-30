@@ -20,15 +20,6 @@ public class PlayerMovementController : MonoBehaviour
         Left = -1
     }
 
-    private enum SurfaceMapping : int 
-    {
-        Death = 0,
-        Orb = 1,
-        Ground = 2,
-        Wall = 3,
-        Air = 4
-    }
-
     #endregion
 
     #region PlayerMovement Variables
@@ -70,8 +61,10 @@ public class PlayerMovementController : MonoBehaviour
     private bool _onGround = false;
     private bool _onLeftWall = false;
     private bool _onRightWall = false;
-    private bool _onWall {
-        get {
+    private bool _onWall
+    {
+        get
+        {
             return _onLeftWall || _onRightWall;
         }
     }
@@ -331,6 +324,8 @@ public class PlayerMovementController : MonoBehaviour
 
         // onGround take priority over onWall;
         if (_onGround) {
+            _onLeftWall = false;
+            _onRightWall = false;
             return;
         }
 

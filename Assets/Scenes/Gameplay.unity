@@ -190,12 +190,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8e9827dce7924ac699842c63d5943c8, type: 3}
---- !u!4 &222000874 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3303254248461885368, guid: c8e9827dce7924ac699842c63d5943c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 222000873}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &419674468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -232,7 +226,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _player
       value: 
-      objectReference: {fileID: 222000874}
+      objectReference: {fileID: 966257776}
     - target: {fileID: 2753622459467133144, guid: 1374cae919a4ce944b115593a80be681,
         type: 3}
       propertyPath: _loadRange
@@ -382,7 +376,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &696636561
 MonoBehaviour:
@@ -396,8 +390,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2246786afab574ca2da4c932cf4050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTransform: {fileID: 222000874}
+  _playerTransform: {fileID: 966257776}
   _cameraComponent: {fileID: 696636559}
+--- !u!4 &966257776 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6334050541407500445, guid: c8e9827dce7924ac699842c63d5943c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 222000873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1097279233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -434,7 +434,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _player
       value: 
-      objectReference: {fileID: 222000874}
+      objectReference: {fileID: 966257776}
     - target: {fileID: 2753622459467133144, guid: 1374cae919a4ce944b115593a80be681,
         type: 3}
       propertyPath: _loadRange
@@ -538,7 +538,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _player
       value: 
-      objectReference: {fileID: 222000874}
+      objectReference: {fileID: 966257776}
     - target: {fileID: 2753622459467133144, guid: 1374cae919a4ce944b115593a80be681,
         type: 3}
       propertyPath: _loadRange
