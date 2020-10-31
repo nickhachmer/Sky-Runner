@@ -219,9 +219,9 @@ public class PlayerMovementController : MonoBehaviour
 
         UpdateDirectionFacing();
 
-        var velocity = _horizontalAxis * _speed;
+        var forceVector = _horizontalAxis * _speed;
 
-        _rigidBody.AddForce(new Vector2(velocity, 0));
+        _rigidBody.AddForce(new Vector2(forceVector, 0));
     }
 
     /**
