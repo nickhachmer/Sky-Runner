@@ -32,7 +32,10 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
     [SerializeField] private LayerMask _terrainLayer = default;
     [SerializeField] private LayerMask _harmLayer = default;
-    [SerializeField] private int _maxJumps = 2;
+    [SerializeField] private ParticleSystem _dashParticles = default;
+    [SerializeField] private ParticleSystem _walkParticles = default;
+    [SerializeField] private int _maxJumps = default;
+    [SerializeField] private int _yPositionLimit = default;
 
     // public properties
     public Transform Transform => _transform;
@@ -40,7 +43,8 @@ public class PlayerMovementController : MonoBehaviour
     // private player values
     private int _speed = default; 
     private int _jumpForce = default; 
-    private int _downForce = default; 
+    private int _downForce = default;
+    private int _verticalComponentDashForce = default;
     private float _gravityScale = default; 
 
     private int _orbForceMultiplier = default;
@@ -72,8 +76,9 @@ public class PlayerMovementController : MonoBehaviour
   
     private DirectionFacing _currentDirectionFacing = default;
     private MovementState _currentMovementState = default;
-
+    
     private Vector3 _startPosition = default;
+    private bool _isDead = false;
     #endregion
 
     #region Player Actions
@@ -87,6 +92,7 @@ public class PlayerMovementController : MonoBehaviour
         _speed = _physicsDatabase.PlayerSpeed;
         _jumpForce = _physicsDatabase.PlayerJumpForce;
         _downForce = _physicsDatabase.PlayerDownForce;
+        _verticalComponentDashForce = _physicsDatabase.PlayerVerticalComponentDashForce;
         _gravityScale = _physicsDatabase.GravityScale;
 
         _rigidBody.gravityScale = _gravityScale;
@@ -113,8 +119,9 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Update()
     {
-        // TODO: need to make "-10" a SerializeField entry or constant (no magic numbers in the code!)
-        if (_transform.position.y < -10) { Died(); }
+        if (_isDead) { return; }
+ 
+        if (_transform.position.y < _yPositionLimit) { Died(); }
 
         // Check if on ground or wall
         CheckTouchingTerrain();
@@ -124,6 +131,10 @@ public class PlayerMovementController : MonoBehaviour
         {
             _canDash = true;
             _canWallClimb = true;
+            if (_walkParticles.isPaused || _walkParticles.isStopped) _walkParticles.Play();
+        } else
+        {
+            _walkParticles.Stop();
         }
 
         // turn gravity back on when done sling shot
@@ -229,7 +240,8 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Horizontal_Dash() {
         _rigidBody.velocity = new Vector2(0, 0);
-        _rigidBody.AddForce(new Vector2(((float) _currentDirectionFacing) * _jumpForce, 10)); // put this "10" in the physicsDatabase
+        _rigidBody.AddForce(new Vector2(((float) _currentDirectionFacing) * _jumpForce, _verticalComponentDashForce));
+        _dashParticles.Play();
         _currentMovementState = MovementState.Default;
     }
     
@@ -375,8 +387,18 @@ public class PlayerMovementController : MonoBehaviour
     private void Died()
     {
         // probably wait until death animation is finished before setting _transform.position
+        _rigidBody.velocity = Vector2.zero;
+        _currentMovementState = MovementState.Default;
+        _isDead = true;
         DeathAnimation();
+        StartCoroutine(DeathTimer());
+    }
+
+    IEnumerator DeathTimer()
+    {
+        yield return new WaitForSeconds(1);
         _transform.position = _startPosition;
+        _isDead = false;
     }
 
     void OnCollisionEnter2D(Collision2D col)

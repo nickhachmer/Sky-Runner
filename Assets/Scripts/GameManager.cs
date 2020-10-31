@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class GameManager
 {
-    private static GameManager instance;
-    private static PauseMenuBehavior pauseMenu;
-    public static bool isGamePaused;
     
+    private PlayerMovementController _playerMovementController = default;
+    private PauseMenuBehavior pauseMenu = default;
 
-    public static GameManager Instance
-    {
+    public static bool isGamePaused;
+    private static GameManager _instance;
+    public static GameManager Instance { 
         get
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = new GameManager();
+                _instance = new GameManager();
             }
-            return instance;
+            return _instance;
         }
+    }
+
+    public GameManager()
+    {
+        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
     }
 
     public void PauseGame() {
@@ -38,7 +43,8 @@ public class GameManager
         }
     }
 
-    // I want to use game manager as a way for scripts to communicate with eachother with out having to get eachothers references
-
-    // Also I will have game options in here
+    public PlayerMovementController getPlayerMovementController()
+    {
+        return _playerMovementController;
+    }
 }
