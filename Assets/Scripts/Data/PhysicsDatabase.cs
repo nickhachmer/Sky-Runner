@@ -14,6 +14,7 @@ public class PhysicsDatabase : ScriptableObject
 	[SerializeField] private int _playerSpeed = default;
 	[SerializeField] private int _playerJumpForce = default;
 	[SerializeField] private int _playerDownForce = default;
+	[SerializeField] private int _playerVerticalComponentDashForce = default;
 	[SerializeField] private int _orbForceMultiplier = default;
 	[SerializeField] private short _orbRange = default;
 	
@@ -25,6 +26,7 @@ public class PhysicsDatabase : ScriptableObject
 	public int PlayerSpeed => _playerSpeed;
 	public int PlayerJumpForce => _playerJumpForce;
 	public int PlayerDownForce => _playerDownForce;
+	public int PlayerVerticalComponentDashForce => _playerVerticalComponentDashForce;
 	public int OrbForceMultiplier => _orbForceMultiplier;
 	public short OrbRange => _orbRange;
 

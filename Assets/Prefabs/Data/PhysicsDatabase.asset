@@ -19,5 +19,6 @@ MonoBehaviour:
   _playerSpeed: 22
   _playerJumpForce: 1000
   _playerDownForce: 50
+  _playerVerticalComponentDashForce: 10
   _orbForceMultiplier: 150
   _orbRange: 6
