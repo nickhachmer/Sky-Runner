@@ -119,7 +119,10 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Update()
     {
-        if (_isDead) { return; }
+        if (_isDead) {
+            _rigidBody.velocity = Vector2.zero;
+            return;
+        }
  
         if (_transform.position.y < _yPositionLimit) { Died(); }
 
@@ -387,7 +390,6 @@ public class PlayerMovementController : MonoBehaviour
     private void Died()
     {
         // probably wait until death animation is finished before setting _transform.position
-        _rigidBody.velocity = Vector2.zero;
         _currentMovementState = MovementState.Default;
         _isDead = true;
         DeathAnimation();

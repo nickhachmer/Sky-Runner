@@ -1588,6 +1588,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 84a9bf672e1844dbb8b04c90b7f7327f, type: 2}
+    - target: {fileID: 5341782469018271841, guid: c8e9827dce7924ac699842c63d5943c8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
       propertyPath: _harmLayerName
@@ -1602,6 +1607,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _terrainLayer.m_Bits
       value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
+        type: 3}
+      propertyPath: _yPositionLimit
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8490110272950735986, guid: c8e9827dce7924ac699842c63d5943c8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8e9827dce7924ac699842c63d5943c8, type: 3}

@@ -7,6 +7,7 @@ public class SlingShotOrbBehavior : MonoBehaviour
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
     [SerializeField] private string _terrainLayerName = default;
     [SerializeField] private Transform _orbRangeIndicator = default;
+    [SerializeField] private short _orbRangeOverride = 0;
     private PlayerMovementController _playerMovementController = default;
 
     private Transform _playerTransform;
@@ -18,7 +19,15 @@ public class SlingShotOrbBehavior : MonoBehaviour
     {
         _terrainLayer = LayerMask.NameToLayer(_terrainLayerName);
         
-        _orbRange = _physicsDatabase.OrbRange;
+        if (_orbRangeOverride != 0)
+        {
+            _orbRange = _orbRangeOverride;
+        }
+        else
+        {
+            _orbRange = _physicsDatabase.OrbRange;
+        }
+        
         _orbRangeIndicator.localScale = new Vector3(4 * _orbRange, 4 * _orbRange, 1);
 
         _playerMovementController = GameManager.Instance.getPlayerMovementController();

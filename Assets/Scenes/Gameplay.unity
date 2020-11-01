@@ -254,12 +254,12 @@ PrefabInstance:
         type: 3}
       propertyPath: _dashParticles
       value: 
-      objectReference: {fileID: 1273784928}
+      objectReference: {fileID: 358497930}
     - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
       propertyPath: _walkParticles
       value: 
-      objectReference: {fileID: 2066989909}
+      objectReference: {fileID: 1418646934}
     - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
       propertyPath: _yPositionLimit
@@ -270,8 +270,19 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6334050541407500445, guid: c8e9827dce7924ac699842c63d5943c8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8e9827dce7924ac699842c63d5943c8, type: 3}
+--- !u!198 &358497930 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3122510263843838299, guid: c8e9827dce7924ac699842c63d5943c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 222000873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &419674468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -827,12 +838,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!198 &1273784928 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 2515343455728905888, guid: 9c49f926e5cde4cb69f03b12e19a6d72,
-    type: 3}
-  m_PrefabInstance: {fileID: 2515343454494475456}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1337789789
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,6 +919,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!198 &1418646934 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5428497419671408168, guid: c8e9827dce7924ac699842c63d5943c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 222000873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1519427302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,12 +1215,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!198 &2066989909 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6465071653197591393, guid: a1580db410cb9409c9769ed189198338,
-    type: 3}
-  m_PrefabInstance: {fileID: 6465071652848398388}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2139507908
 GameObject:
   m_ObjectHideFlags: 0
