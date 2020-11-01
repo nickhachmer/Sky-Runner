@@ -5,20 +5,16 @@ using UnityEngine;
 public class SlingShotOrbBehavior : MonoBehaviour
 {
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
-    [SerializeField] private string _terrainLayerName = default;
     [SerializeField] private Transform _orbRangeIndicator = default;
     [SerializeField] private short _orbRangeOverride = 0;
     private PlayerMovementController _playerMovementController = default;
 
     private Transform _playerTransform;
-    private LayerMask _terrainLayer;
     private short _orbRange = default;
     private bool _isActive = false;
 
     void Awake()
     {
-        _terrainLayer = LayerMask.NameToLayer(_terrainLayerName);
-        
         if (_orbRangeOverride != 0)
         {
             _orbRange = _orbRangeOverride;
@@ -37,9 +33,7 @@ public class SlingShotOrbBehavior : MonoBehaviour
 
     void Update()
     {
-        bool isTerrainInBetween = Physics2D.Linecast(transform.position, _playerTransform.position, 1 << _terrainLayer.value);
-
-        if (!isTerrainInBetween && Vector2.Distance(transform.position, _playerTransform.position) < _orbRange)
+        if (Vector2.Distance(transform.position, _playerTransform.position) < _orbRange)
         {
             _isActive = true;
             _playerMovementController.SetActiveOrb(true, transform.position);
@@ -52,7 +46,7 @@ public class SlingShotOrbBehavior : MonoBehaviour
 
         if (_isActive)
         {
-            
+            // makes the orb range indicator change colors
             Color lightBlue = new Color(0.1f, 0.67f, 1f, 0.4f);
             Color darkBlue = new Color(0.4f, 0.4f, 1f, 0.4f);
             _orbRangeIndicator.GetComponent<SpriteRenderer>().color = Color.Lerp(lightBlue, darkBlue, Mathf.PingPong(Time.time, 1));

@@ -164,7 +164,7 @@ public class PlayerMovementController : MonoBehaviour
             _fPressed = false;
         }
 
-        else if (slingShotPressed && _isOrbActive) 
+        if (slingShotPressed && _isOrbActive) 
         {
             _currentMovementState = MovementState.SlingShotActive;
         }
