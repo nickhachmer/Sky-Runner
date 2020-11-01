@@ -164,14 +164,6 @@ public class PlayerMovementController : MonoBehaviour
             _fPressed = false;
         }
 
-        if (pauseButtonPressed && !GameManager.isGamePaused)
-        {
-            GameManager.Instance.PauseGame();
-        }
-        else if (pauseButtonPressed && GameManager.isGamePaused)
-        {
-            GameManager.Instance.ResumeGame();
-        }
         else if (slingShotPressed && _isOrbActive) 
         {
             _currentMovementState = MovementState.SlingShotActive;

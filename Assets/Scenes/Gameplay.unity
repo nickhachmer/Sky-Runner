@@ -245,25 +245,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5190170310222545917, guid: c8e9827dce7924ac699842c63d5943c8,
+    - target: {fileID: 5341782469018271841, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 84a9bf672e1844dbb8b04c90b7f7327f, type: 2}
-    - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
-        type: 3}
-      propertyPath: _dashParticles
-      value: 
-      objectReference: {fileID: 358497930}
-    - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
-        type: 3}
-      propertyPath: _walkParticles
-      value: 
-      objectReference: {fileID: 1418646934}
-    - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
-        type: 3}
-      propertyPath: _yPositionLimit
-      value: -10
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6334050541407500445, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
@@ -275,14 +260,13 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8490110272950735986, guid: c8e9827dce7924ac699842c63d5943c8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8e9827dce7924ac699842c63d5943c8, type: 3}
---- !u!198 &358497930 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3122510263843838299, guid: c8e9827dce7924ac699842c63d5943c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 222000873}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &419674468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -919,12 +903,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!198 &1418646934 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5428497419671408168, guid: c8e9827dce7924ac699842c63d5943c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 222000873}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1519427302
 GameObject:
   m_ObjectHideFlags: 0
