@@ -10,7 +10,7 @@ public class CameraMovementController : MonoBehaviour
     
     private short _screenBufferY = 2;
     private short _screenBufferX = 5;
-    private short _orthographicSize = 10;
+    private short _orthographicSize = 8;
     private short _zPosition = -10;
 
     void Awake()
