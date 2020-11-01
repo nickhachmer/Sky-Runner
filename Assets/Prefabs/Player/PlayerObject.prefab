@@ -176,8 +176,10 @@ MonoBehaviour:
   _harmLayer:
     serializedVersion: 2
     m_Bits: 2048
-  _dashParticles: {fileID: 0}
-  _walkParticles: {fileID: 0}
+  _dashParticles: {fileID: 2515343455728905888, guid: 9c49f926e5cde4cb69f03b12e19a6d72,
+    type: 3}
+  _walkParticles: {fileID: 6465071653197591393, guid: a1580db410cb9409c9769ed189198338,
+    type: 3}
   _maxJumps: 2
   _yPositionLimit: 0
 --- !u!114 &3230068225902034217

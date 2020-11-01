@@ -1587,7 +1587,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 064a32146fe6f4bb2b1dbf5f6a7a0e18, type: 2}
+      objectReference: {fileID: 9100000, guid: 84a9bf672e1844dbb8b04c90b7f7327f, type: 2}
     - target: {fileID: 6077714056197110749, guid: c8e9827dce7924ac699842c63d5943c8,
         type: 3}
       propertyPath: _harmLayerName
