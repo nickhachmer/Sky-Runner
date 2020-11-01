@@ -1,17 +1,24 @@
 ﻿// Source/References: https://github.com/amel-unity/Multi-Scene-workflow/blob/master/Assets/Creator%20Kit%20-%20FPS/Scripts/System/ScenePartLoader.cs
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum CheckMethod
+{
+    Distance,
+    Trigger
+}
+
 public class SceneLoader : MonoBehaviour
 {
+
+    public CheckMethod _checkMethod;
     [SerializeField] private Transform _player = default;
     [SerializeField] private float _loadRange = default;
 
-    private bool _isLoaded = false;
-    
+    // Scene state
+    private bool _isLoaded;
+    private bool _shouldLoad;
     void Start()
     {
         // verify if the scene is already open to avoid opening a scene twice
@@ -30,10 +37,18 @@ public class SceneLoader : MonoBehaviour
 
     void Update()
     {
-        DistanceCheck();
+        // Checking which method to use
+        if (_checkMethod == CheckMethod.Distance)
+        {
+            DistanceCheck();
+        }
+        else if (_checkMethod == CheckMethod.Trigger)
+        {
+            TriggerCheck();
+        }
     }
 
-    private void DistanceCheck()
+    void DistanceCheck()
     {
         // Checking if the player is within the range
         if (Vector3.Distance(_player.position, transform.position) < _loadRange)
@@ -46,7 +61,7 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    private void LoadScene()
+    void LoadScene()
     {
         if (!_isLoaded)
         {
@@ -57,12 +72,41 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    private void UnLoadScene()
+    void UnLoadScene()
     {
         if (_isLoaded)
         {
             SceneManager.UnloadSceneAsync(gameObject.name);
             _isLoaded = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            _shouldLoad = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.CompareTag("Player"))
+        {
+            _shouldLoad = false;
+        }
+    }
+
+    void TriggerCheck()
+    {
+        // _shouldLoad is set from the Trigger methods
+        if (_shouldLoad)
+        {
+            LoadScene();
+        }
+        else
+        {
+            UnLoadScene();
         }
     }
 }

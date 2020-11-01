@@ -70,5 +70,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1319db00451f24e4098505dc35ff68bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkMethod: 1
   _player: {fileID: 0}
-  _loadRange: 0
+  _loadRange: 60
