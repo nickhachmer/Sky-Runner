@@ -72,7 +72,7 @@ public class PlayerMovementController : MonoBehaviour
             return _onLeftWall || _onRightWall;
         }
     }
-    private bool _fPressed = false;
+    private bool _orbPulled = false;
   
     private DirectionFacing _currentDirectionFacing = default;
     private MovementState _currentMovementState = default;
@@ -150,18 +150,18 @@ public class PlayerMovementController : MonoBehaviour
         _verticalAxis = Mathf.Abs(Input.GetAxisRaw("Vertical")) > _axisBuffer? Input.GetAxisRaw("Vertical") : 0;
 
         bool jumpKeyPressed = Input.GetButtonDown("Jump");
-        bool dashKeyPressed = Input.GetKeyDown(KeyCode.LeftShift);
-        bool slingShotPressed = Input.GetKeyDown(KeyCode.F);
-        bool slingShotReleased = Input.GetKeyUp(KeyCode.F);
-        bool pauseButtonPressed = Input.GetKeyDown(KeyCode.Escape);
+        bool dashKeyPressed = Input.GetButtonDown("Dash");
+        bool slingShotPressed = Input.GetButtonDown("OrbPull");
+        bool slingShotReleased = Input.GetButtonUp("OrbPull");
+        bool pauseButtonPressed = Input.GetButtonDown("Pause");
 
         if (slingShotPressed)
         {
-            _fPressed = true;
+            _orbPulled = true;
         }
         else if (slingShotReleased)
         {
-            _fPressed = false;
+            _orbPulled = false;
         }
 
         if (slingShotPressed && _isOrbActive) 
@@ -190,7 +190,7 @@ public class PlayerMovementController : MonoBehaviour
             Debug.DrawLine(_activeOrbPosition, _transform.position, Color.red);
         }
 
-        UpdateAnimationState(_onGround, _onWall, _fPressed, _isOrbActive);
+        UpdateAnimationState(_onGround, _onWall, _orbPulled, _isOrbActive);
     }
 
     /**
