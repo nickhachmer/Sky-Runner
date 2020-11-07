@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     #region Player Enums
-    private enum MovementState : short
+    public enum MovementState : short
     {
         Default = 0,
         JumpActive = 1,
@@ -79,6 +79,8 @@ public class PlayerMovementController : MonoBehaviour
     
     private Vector3 _startPosition = default;
     private bool _isDead = false;
+
+    public MovementState CurrentMovementState { get; set; }
     #endregion
 
     #region Player Actions
