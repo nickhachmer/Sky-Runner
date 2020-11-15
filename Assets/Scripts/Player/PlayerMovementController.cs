@@ -36,6 +36,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private ParticleSystem _walkParticles = default;
     [SerializeField] private int _maxJumps = default;
     [SerializeField] private int _yPositionLimit = default;
+    [SerializeField] private float _stretchConstant = default;
 
     // public properties
     public Transform Transform => _transform;
@@ -125,7 +126,10 @@ public class PlayerMovementController : MonoBehaviour
             _rigidBody.velocity = Vector2.zero;
             return;
         }
- 
+
+        // stretches the player sprite based on its vertical velocity
+        _transform.localScale = new Vector3(4 + _rigidBody.velocity.x/ _stretchConstant, 4 - _rigidBody.velocity.y / _stretchConstant, 1);
+
         if (_transform.position.y < _yPositionLimit) { Died(); }
 
         // Check if on ground or wall
