@@ -78,7 +78,7 @@ public class PlayerMovementController : MonoBehaviour
     private DirectionFacing _currentDirectionFacing = default;
     private MovementState _currentMovementState = default;
     
-    private Vector3 _startPosition = default;
+    private Vector3 _respawnPosition = default;
     private bool _isDead = false;
 
     public MovementState CurrentMovementState { get; set; }
@@ -105,7 +105,7 @@ public class PlayerMovementController : MonoBehaviour
 
         _orbForceMultiplier = _physicsDatabase.OrbForceMultiplier;
 
-        _startPosition = Vector3.zero;
+        _respawnPosition = Vector3.zero;
 
         UpdateAnimationState += _animation.SetAnimationState;
         DeathAnimation += _animation.SetDeathState;
@@ -122,15 +122,10 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Update()
     {
-        if (_isDead) {
-            _rigidBody.velocity = Vector2.zero;
-            return;
-        }
-
         // stretches the player sprite based on its vertical velocity
         _transform.localScale = new Vector3(4 + _rigidBody.velocity.x/ _stretchConstant, 4 - _rigidBody.velocity.y / _stretchConstant, 1);
 
-        if (_transform.position.y < _yPositionLimit) { Died(); }
+        if (_transform.position.y < _yPositionLimit && !_isDead) { Died(); }
 
         // Check if on ground or wall
         CheckTouchingTerrain();
@@ -390,6 +385,7 @@ public class PlayerMovementController : MonoBehaviour
         // probably wait until death animation is finished before setting _transform.position
         _currentMovementState = MovementState.Default;
         _isDead = true;
+        _rigidBody.constraints |= RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         DeathAnimation();
         StartCoroutine(DeathTimer());
     }
@@ -397,13 +393,14 @@ public class PlayerMovementController : MonoBehaviour
     IEnumerator DeathTimer()
     {
         yield return new WaitForSeconds(1);
-        _transform.position = _startPosition;
+        _transform.position = _respawnPosition;
+        _rigidBody.constraints ^= RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         _isDead = false;
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if ((1 << col.gameObject.layer) == _harmLayer.value)
+        if ((1 << col.gameObject.layer) == _harmLayer.value && !_isDead)
         {
             Died();
             Debug.Log("Player died");

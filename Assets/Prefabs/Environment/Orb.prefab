@@ -194,5 +194,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _physicsDatabase: {fileID: 11400000, guid: 1b0f23822166c41efbb1ee94b436103d, type: 2}
-  _terrainLayerName: Terrain
   _orbRangeIndicator: {fileID: 331799098429632128}
+  _orbRangeOverride: 0
