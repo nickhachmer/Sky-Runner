@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private int _maxJumps = default;
     [SerializeField] private int _yPositionLimit = default;
     [SerializeField] private float _stretchConstant = default;
+    private InputMaster _controls;
 
     // public properties
     public Transform Transform => _transform;
@@ -81,6 +83,8 @@ public class PlayerMovementController : MonoBehaviour
     private Vector3 _respawnPosition = default;
     private bool _isDead = false;
 
+    private bool slingShotReleased = default;
+
     public MovementState CurrentMovementState { get; set; }
     #endregion
 
@@ -109,12 +113,19 @@ public class PlayerMovementController : MonoBehaviour
 
         UpdateAnimationState += _animation.SetAnimationState;
         DeathAnimation += _animation.SetDeathState;
+
+        _controls = new InputMaster();
+        _controls.Player.Orb.canceled += contxt =>
+        {
+            slingShotReleased = true;
+        };
     }
     
     private void Start()
     {
         _currentDirectionFacing = DirectionFacing.Right;
         _currentMovementState = MovementState.Default;
+
     }
 
     /** 
@@ -122,6 +133,7 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Update()
     {
+
         // stretches the player sprite based on its vertical velocity
         _transform.localScale = new Vector3(4 + _rigidBody.velocity.x/ _stretchConstant, 4 - _rigidBody.velocity.y / _stretchConstant, 1);
 
@@ -147,14 +159,12 @@ public class PlayerMovementController : MonoBehaviour
             _rigidBody.gravityScale = _gravityScale;
         }
 
-        _horizontalAxis = Mathf.Abs(Input.GetAxisRaw("Horizontal")) > _axisBuffer? Input.GetAxisRaw("Horizontal") : 0;
-        _verticalAxis = Mathf.Abs(Input.GetAxisRaw("Vertical")) > _axisBuffer? Input.GetAxisRaw("Vertical") : 0;
+        _horizontalAxis = _controls.Player.Movement.ReadValue<Vector2>().x;
+        _verticalAxis = _controls.Player.Movement.ReadValue<Vector2>().y;
 
-        bool jumpKeyPressed = Input.GetButtonDown("Jump");
-        bool dashKeyPressed = Input.GetButtonDown("Dash");
-        bool slingShotPressed = Input.GetButtonDown("OrbPull");
-        bool slingShotReleased = Input.GetButtonUp("OrbPull");
-        bool pauseButtonPressed = Input.GetButtonDown("Pause");
+        bool jumpKeyPressed = _controls.Player.Jump.triggered;
+        bool dashKeyPressed = _controls.Player.Dash.triggered;
+        bool slingShotPressed = _controls.Player.Orb.ReadValue<float>() > 0.1f ? true : false;
 
         if (slingShotPressed)
         {
@@ -165,7 +175,7 @@ public class PlayerMovementController : MonoBehaviour
             _orbPulled = false;
         }
 
-        if (slingShotPressed && _isOrbActive) 
+        if (slingShotPressed && _isOrbActive)
         {
             _currentMovementState = MovementState.SlingShotActive;
         }
@@ -174,12 +184,12 @@ public class PlayerMovementController : MonoBehaviour
             _slingShotActive = false;
             _currentMovementState = MovementState.Default;
         }
-        else if (jumpKeyPressed) 
+        else if (jumpKeyPressed)
         {
             _slingShotActive = false;
             _currentMovementState = MovementState.JumpActive;
-        } 
-        else if (dashKeyPressed && _canDash) 
+        }
+        else if (dashKeyPressed && _canDash)
         {
             _slingShotActive = false;
             _currentMovementState = MovementState.DashActive;
@@ -192,6 +202,8 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         UpdateAnimationState(_onGround, _onWall, _orbPulled, _isOrbActive);
+
+        slingShotReleased = false;
     }
 
     /**
@@ -209,12 +221,6 @@ public class PlayerMovementController : MonoBehaviour
                 break;
             } 
         }
-    }
-
-    private void OnDestroy()
-    {
-        UpdateAnimationState -= _animation.SetAnimationState;
-        DeathAnimation -= _animation.SetDeathState;
     }
 
     #region Movement Methods
@@ -398,6 +404,8 @@ public class PlayerMovementController : MonoBehaviour
         _isDead = false;
     }
 
+    #region GameObject Events
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if ((1 << col.gameObject.layer) == _harmLayer.value && !_isDead)
@@ -406,4 +414,22 @@ public class PlayerMovementController : MonoBehaviour
             Debug.Log("Player died");
         }
     }
+
+    void OnEnable()
+    {
+        _controls.Enable();
+    }
+
+    void OnDsiable()
+    {
+        _controls.Disable();
+    }
+
+    private void OnDestroy()
+    {
+        UpdateAnimationState -= _animation.SetAnimationState;
+        DeathAnimation -= _animation.SetDeathState;
+    }
+
+    #endregion
 }
