@@ -20,7 +20,7 @@ public class MainMenuController : MonoBehaviour
 
     public void Play()
     {
-
+        // open save game selection menu
     }
 
     public void Quit()
@@ -34,12 +34,7 @@ public class MainMenuController : MonoBehaviour
 
     public void Save()
     {
-
-    }
-
-    public void Back()
-    {
-
+        
     }
 
     #endregion

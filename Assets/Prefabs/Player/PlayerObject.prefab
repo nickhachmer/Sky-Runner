@@ -4908,7 +4908,7 @@ Animator:
   m_GameObject: {fileID: 3303254248461885369}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 064a32146fe6f4bb2b1dbf5f6a7a0e18, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4996,6 +4996,7 @@ MonoBehaviour:
   _maxJumps: 2
   _yPositionLimit: -10
   _stretchConstant: 20
+  _gameState: {fileID: 11400000, guid: 282c6d07d07d94513841350d7148a9d1, type: 2}
 --- !u!114 &3230068225902034217
 MonoBehaviour:
   m_ObjectHideFlags: 0

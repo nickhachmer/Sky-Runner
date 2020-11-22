@@ -37,6 +37,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private int _maxJumps = default;
     [SerializeField] private int _yPositionLimit = default;
     [SerializeField] private float _stretchConstant = default;
+    [SerializeField] private GameState _gameState = default;
 
     // public properties
     public Transform Transform => _transform;
@@ -77,7 +78,7 @@ public class PlayerMovementController : MonoBehaviour
   
     private DirectionFacing _currentDirectionFacing = default;
     private MovementState _currentMovementState = default;
-    
+
     private Vector3 _respawnPosition = default;
     private bool _isDead = false;
 
@@ -105,10 +106,11 @@ public class PlayerMovementController : MonoBehaviour
 
         _orbForceMultiplier = _physicsDatabase.OrbForceMultiplier;
 
-        _respawnPosition = Vector3.zero;
+        _respawnPosition = _gameState.Checkpoint;
 
         UpdateAnimationState += _animation.SetAnimationState;
         DeathAnimation += _animation.SetDeathState;
+        _gameState.OnUpdateGameState += UpdateRespawnPosition;
     }
     
     private void Start()
@@ -215,6 +217,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         UpdateAnimationState -= _animation.SetAnimationState;
         DeathAnimation -= _animation.SetDeathState;
+        _gameState.OnUpdateGameState -= UpdateRespawnPosition;
     }
 
     #region Movement Methods
@@ -405,5 +408,10 @@ public class PlayerMovementController : MonoBehaviour
             Died();
             Debug.Log("Player died");
         }
+    }
+
+    private void UpdateRespawnPosition()
+    {
+        _respawnPosition = _gameState.Checkpoint;
     }
 }
