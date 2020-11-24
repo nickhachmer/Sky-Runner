@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757bb919ba1cb4fde933ee99c9d6fcfe, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  _checkpoint: {x: -5.9, y: -2.9, z: 0}
+  _checkpoint: {x: -2.9, y: -5.9, z: 0}
