@@ -8,11 +8,12 @@ public class PlayerMovementController : MonoBehaviour
     #region PlayerMovement Properties
 
     // public player values set in editor
+    [SerializeField] private Transform                  _transform = default;
     [SerializeField] private BoxCollider2D              _boxCollider = default;
     [SerializeField] private Rigidbody2D                _rigidBody = default;
-    [SerializeField] private Transform                  _transform = default;
     [SerializeField] private PlayerAnimationController  _animation = default;
     [SerializeField] private PhysicsDatabase            _physicsDatabase = default;
+    [SerializeField] private GameState                  _gameState = default;
     [SerializeField] private LayerMask                  _terrainLayer = default;
     [SerializeField] private LayerMask                  _harmLayer = default;
     [SerializeField] private ParticleSystem             _dashParticles = default;
@@ -20,7 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private int                        _maxJumps = default;
     [SerializeField] private int                        _yPositionLimit = default;
     [SerializeField] private float                      _stretchConstant = default;
-    [SerializeField] private GameState                  _gameState = default;
+    
     
     public Transform Transform => _transform;
     public InputMaster _controls;
@@ -253,6 +254,7 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Vertical_WallClimb() {
         if (_playerState.canWallClimb) {
+            _rigidBody.velocity = Vector2.zero;
             _rigidBody.AddForce(new Vector2(0, _jumpForce));
             _playerState.canWallClimb = false;
         }

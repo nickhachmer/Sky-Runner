@@ -301,9 +301,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindOverlay?.SetActive(true);
             if (m_RebindText != null)
             {
-                var text = !string.IsNullOrEmpty(m_RebindOperation.expectedControlType)
+                var text = "...";
+                /*!string.IsNullOrEmpty(m_RebindOperation.expectedControlType)
                     ? $"{partName}Waiting for {m_RebindOperation.expectedControlType} input..."
-                    : $"{partName}Waiting for input...";
+                    : $"{partName}Waiting for input...";*/
                 m_RebindText.text = text;
             }
 

@@ -4875,7 +4875,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.19, y: 0.3}
+  m_Size: {x: 0.2, y: 0.3}
   m_EdgeRadius: 0
 --- !u!50 &563652229875410449
 Rigidbody2D:
@@ -4908,7 +4908,7 @@ Animator:
   m_GameObject: {fileID: 3303254248461885369}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 84a9bf672e1844dbb8b04c90b7f7327f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 064a32146fe6f4bb2b1dbf5f6a7a0e18, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4980,11 +4980,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f97a7c0604b5a14cbbdf6ad93ccc174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _transform: {fileID: 6334050541407500445}
   _boxCollider: {fileID: 3638607712192544257}
   _rigidBody: {fileID: 563652229875410449}
-  _transform: {fileID: 6334050541407500445}
   _animation: {fileID: 3230068225902034217}
   _physicsDatabase: {fileID: 11400000, guid: 1b0f23822166c41efbb1ee94b436103d, type: 2}
+  _gameState: {fileID: 11400000, guid: 282c6d07d07d94513841350d7148a9d1, type: 2}
   _terrainLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -4996,7 +4997,6 @@ MonoBehaviour:
   _maxJumps: 2
   _yPositionLimit: -10
   _stretchConstant: 20
-  _gameState: {fileID: 11400000, guid: 282c6d07d07d94513841350d7148a9d1, type: 2}
 --- !u!114 &3230068225902034217
 MonoBehaviour:
   m_ObjectHideFlags: 0
