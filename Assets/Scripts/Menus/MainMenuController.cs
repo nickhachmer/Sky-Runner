@@ -2,23 +2,14 @@
 
 public class MainMenuController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Resume()
     {
-        
+        // start from checkpoint
     }
 
-    // Update is called once per frame
-    void Update()
+    public void NewGame()
     {
-        
-    }
-
-    #region home menu
-
-    public void Play()
-    {
-        // open save game selection menu
+        // start from tutorial
     }
 
     public void Quit()
@@ -26,14 +17,4 @@ public class MainMenuController : MonoBehaviour
         Application.Quit();
     }
 
-    #endregion
-
-    #region options menu
-
-    public void Save()
-    {
-        
-    }
-
-    #endregion
 }

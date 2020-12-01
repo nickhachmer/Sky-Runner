@@ -114,6 +114,7 @@ public class PlayerMovementController : MonoBehaviour
 
         bool jumpKeyPressed = _controls.Player.Jump.triggered;
         bool dashKeyPressed = _controls.Player.Dash.triggered;
+        bool pauseButtonPressed = _controls.Player.Pause.triggered;
         bool slingShotPressed = _controls.Player.Orb.ReadValue<float>() > 0.1f ? true : false;
 
         if (slingShotPressed)
@@ -125,7 +126,15 @@ public class PlayerMovementController : MonoBehaviour
             _playerState.orbPulled = false;
         }
 
-        if (slingShotPressed && _playerState.isOrbActive)
+        if (pauseButtonPressed && !GameManager.isGamePaused)
+        {
+            GameManager.Instance.PauseGame();
+        }
+        else if (pauseButtonPressed && GameManager.isGamePaused)
+        {
+            GameManager.Instance.ResumeGame();
+        }
+        else if (slingShotPressed && _playerState.isOrbActive)
         {
             _playerState.currentMovementState = MovementState.SlingShotActive;
         }

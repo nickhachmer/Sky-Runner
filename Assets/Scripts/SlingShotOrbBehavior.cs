@@ -26,7 +26,7 @@ public class SlingShotOrbBehavior : MonoBehaviour
         
         _orbRangeIndicator.localScale = new Vector3(4 * _orbRange, 4 * _orbRange, 1);
 
-        _playerMovementController = GameManager.Instance.getPlayerMovementController();
+        _playerMovementController = GameManager.Instance.PlayerMovementController;
         _playerTransform = _playerMovementController.Transform;
 
     }
