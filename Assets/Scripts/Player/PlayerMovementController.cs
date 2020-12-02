@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using Assets.Scripts.Player;
+using UnityEngine.UI;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private LayerMask                  _harmLayer = default;
     [SerializeField] private ParticleSystem             _dashParticles = default;
     [SerializeField] private ParticleSystem             _walkParticles = default;
+    [SerializeField] private Text                       _gameMessageText = default;
     [SerializeField] private int                        _maxJumps = default;
     [SerializeField] private int                        _yPositionLimit = default;
     [SerializeField] private float                      _stretchConstant = default;
@@ -62,6 +64,7 @@ public class PlayerMovementController : MonoBehaviour
         UpdateAnimationState += _animation.SetAnimationState;
         DeathAnimation += _animation.SetDeathState;
         _gameState.OnUpdateGameState += UpdateRespawnPosition;
+        _gameState.OnUpdateGameState += UpdateHeightLimit;
 
         _controls = new InputMaster();
         _controls.Player.Orb.canceled += context =>
@@ -360,6 +363,16 @@ public class PlayerMovementController : MonoBehaviour
         _playerState.isDead = false;
     }
 
+    private void UpdateRespawnPosition()
+    {
+        _respawnPosition = _gameState.Checkpoint;
+    }
+
+    private void UpdateHeightLimit()
+    {
+        _yPositionLimit = _gameState.HeightLimit;
+    }
+
     #region GameObject Events
 
     void OnCollisionEnter2D(Collision2D col)
@@ -370,11 +383,21 @@ public class PlayerMovementController : MonoBehaviour
             Debug.Log("Player died");
         }
     }
-
-    private void UpdateRespawnPosition()
+    
+    void OnTriggerEnter2D(Collider2D col)
     {
-        _respawnPosition = _gameState.Checkpoint;
+        var sign = col.gameObject.GetComponent<MessageSignController>();
+        if (sign != null)
+        {
+            _gameMessageText.text = sign.getMessage();
+        }
     }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        _gameMessageText.text = String.Empty;
+    }
+
     void OnEnable()
     {
         _controls.Enable();
@@ -390,6 +413,7 @@ public class PlayerMovementController : MonoBehaviour
         UpdateAnimationState -= _animation.SetAnimationState;
         DeathAnimation -= _animation.SetDeathState;
         _gameState.OnUpdateGameState -= UpdateRespawnPosition;
+        _gameState.OnUpdateGameState -= UpdateHeightLimit;
     }
 
     #endregion
