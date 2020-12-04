@@ -13,6 +13,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private BoxCollider2D              _boxCollider = default;
     [SerializeField] private Rigidbody2D                _rigidBody = default;
     [SerializeField] private PlayerAnimationController  _animation = default;
+    [SerializeField] private SoundManager               _soundManager = default;
     [SerializeField] private PhysicsDatabase            _physicsDatabase = default;
     [SerializeField] private GameState                  _gameState = default;
     [SerializeField] private LayerMask                  _terrainLayer = default;
@@ -111,6 +112,10 @@ public class PlayerMovementController : MonoBehaviour
         {
             _rigidBody.gravityScale = _gravityScale;
         }
+        else
+        {
+            _soundManager.PlaySoundEffect(SoundEffects.Orb);
+        }
 
         _horizontalAxis = _controls.Player.Movement.ReadValue<Vector2>().x;
         _verticalAxis = _controls.Player.Movement.ReadValue<Vector2>().y;
@@ -206,6 +211,7 @@ public class PlayerMovementController : MonoBehaviour
         _rigidBody.velocity = new Vector2(0, 0);
         _rigidBody.AddForce(new Vector2(((float)_playerState.currentDirectionFacing) * _jumpForce, _verticalComponentDashForce));
         _dashParticles.Play();
+        _soundManager.PlaySoundEffect(SoundEffects.Dash);
         _playerState.currentMovementState = MovementState.Default;
     }
     
@@ -228,6 +234,7 @@ public class PlayerMovementController : MonoBehaviour
             _rigidBody.velocity = new Vector2(_rigidBody.velocity.x, 0);
             _rigidBody.AddForce(new Vector2(0, _jumpForce));
             _playerState.jumpCounter++;
+            _soundManager.PlaySoundEffect(SoundEffects.Jump);
         }
 
         _playerState.currentMovementState = MovementState.Default;
@@ -240,6 +247,7 @@ public class PlayerMovementController : MonoBehaviour
         _rigidBody.velocity = new Vector2(0, 0);
         _rigidBody.AddForce(new Vector2(((float) _playerState.currentDirectionFacing) * _jumpForce, _jumpForce));
         _playerState.jumpCounter = 1;
+        _soundManager.PlaySoundEffect(SoundEffects.WallJump);
         _playerState.currentMovementState = MovementState.Default;
     }
 

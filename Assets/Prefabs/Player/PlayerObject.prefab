@@ -4994,9 +4994,10 @@ MonoBehaviour:
     m_Bits: 2048
   _dashParticles: {fileID: 3122510263843838299}
   _walkParticles: {fileID: 5428497419671408168}
+  _gameMessageText: {fileID: 0}
   _maxJumps: 2
   _yPositionLimit: -10
-  _stretchConstant: 20
+  _stretchConstant: 10
 --- !u!114 &3230068225902034217
 MonoBehaviour:
   m_ObjectHideFlags: 0
