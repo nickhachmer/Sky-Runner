@@ -7,7 +7,9 @@ public class CameraMovementController : MonoBehaviour
     
     [SerializeField] private Transform _playerTransform = default;
     [SerializeField] private Camera _cameraComponent = default;
-    
+    [SerializeField] private float _screenShakeAmount = default;
+    [SerializeField] private float _screenShakeLength = default;
+
     private short _screenBufferY = 2;
     private short _screenBufferX = 5;
     private short _orthographicSize = 10;
@@ -48,6 +50,32 @@ public class CameraMovementController : MonoBehaviour
         transform.position = new Vector3(x, y, _zPosition);
     }
 
+    // screen shake code obtained from https://www.youtube.com/watch?v=Y8nOgEpnnXo
+    public void ShakeScreen()
+    {
+        InvokeRepeating("BeginShake", 0f, 0.1f);
+        Invoke("StopShake", _screenShakeLength);
+    }
 
+    private void BeginShake()
+    {
+        if (_screenShakeAmount > 0)
+        {
+            Vector3 cameraPosition = _cameraComponent.transform.position;
+
+            float offsetX = Random.value * _screenShakeAmount * 2 - _screenShakeAmount;
+            float offsetY = Random.value * _screenShakeAmount * 2 - _screenShakeAmount;
+            cameraPosition.x += offsetX;
+            cameraPosition.y += offsetY;
+
+            _cameraComponent.transform.position = cameraPosition;
+        }
+    }
+
+    private void StopShake()
+    {
+        CancelInvoke("BeginShake");
+        _cameraComponent.transform.localPosition = Vector3.zero;
+    }
 
 }

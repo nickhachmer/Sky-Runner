@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine;
 using Assets.Scripts.Player;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using System.Linq;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -73,7 +75,6 @@ public class PlayerMovementController : MonoBehaviour
             _playerState.slingShotReleased = true;
         };
 
-        
     }
     
     private void Start()
@@ -87,6 +88,8 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Update()
     {
+
+
 
         // stretches the player sprite based on its vertical velocity
         _transform.localScale = new Vector3(4 + _rigidBody.velocity.x/ _stretchConstant, 4 - _rigidBody.velocity.y / _stretchConstant, 1);
@@ -212,6 +215,7 @@ public class PlayerMovementController : MonoBehaviour
         _rigidBody.AddForce(new Vector2(((float)_playerState.currentDirectionFacing) * _jumpForce, _verticalComponentDashForce));
         _dashParticles.Play();
         _soundManager.PlaySoundEffect(SoundEffects.Dash);
+        GameManager.Instance.CameraMovementController.ShakeScreen();
         _playerState.currentMovementState = MovementState.Default;
     }
     

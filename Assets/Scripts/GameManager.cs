@@ -8,6 +8,7 @@ public class GameManager
     private static GameManager _instance;
 
     private PlayerMovementController _playerMovementController;
+    private CameraMovementController _cameraMovementController;
     private PauseMenuController _pauseMenu;    
 
     public PlayerMovementController PlayerMovementController { 
@@ -19,6 +20,19 @@ public class GameManager
             }
 
             return _playerMovementController;
+        }
+    }
+
+    public CameraMovementController CameraMovementController
+    {
+        get
+        {
+            if (_cameraMovementController == null)
+            {
+                _cameraMovementController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovementController>();
+            }
+
+            return _cameraMovementController;
         }
     }
 
