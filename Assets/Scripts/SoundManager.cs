@@ -32,9 +32,8 @@ public class SoundManager : MonoBehaviour
                 _audioSource.PlayOneShot(_soundsDatabase.OnWall); 
                 break;
             case SoundEffects.Orb:
-                _audioSource.clip = _soundsDatabase.Orb;
                 _audioSource.loop = true;
-                if (!_audioSource.isPlaying) _audioSource.Play();
+                if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_soundsDatabase.Orb);
                 break;
             case SoundEffects.MovingFast:
                 _audioSource.PlayOneShot(_soundsDatabase.MovingFast);
