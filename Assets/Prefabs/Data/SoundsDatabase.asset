@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36f862b997749046b7a5c93ed885e61, type: 3}
   m_Name: SoundsDatabase
   m_EditorClassIdentifier: 
-  _jump: {fileID: 8300000, guid: d4738499f8aecae4e8a2f85a77482457, type: 3}
-  _dash: {fileID: 8300000, guid: d4738499f8aecae4e8a2f85a77482457, type: 3}
-  _wallJump: {fileID: 8300000, guid: d4738499f8aecae4e8a2f85a77482457, type: 3}
-  _onWall: {fileID: 8300000, guid: d4738499f8aecae4e8a2f85a77482457, type: 3}
-  _orb: {fileID: 8300000, guid: d4738499f8aecae4e8a2f85a77482457, type: 3}
-  _movingFast: {fileID: 8300000, guid: d4738499f8aecae4e8a2f85a77482457, type: 3}
+  _jump: {fileID: 8300000, guid: ccf11ed02545ba048a617ba77a91bf8c, type: 3}
+  _dash: {fileID: 8300000, guid: 24cfe5e3624909e42897ecbc4cc039d8, type: 3}
+  _wallJump: {fileID: 8300000, guid: ccf11ed02545ba048a617ba77a91bf8c, type: 3}
+  _onWall: {fileID: 0}
+  _orb: {fileID: 8300000, guid: dfc8c5a9963bf9f449ec736361d601cb, type: 3}
+  _movingFast: {fileID: 0}
