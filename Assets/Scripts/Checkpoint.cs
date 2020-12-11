@@ -3,6 +3,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
 	[SerializeField] private Vector3 _spawnPosition = default;
+	[SerializeField] private ParticleSystem _paticles = default;
 	[SerializeField] private GameState _gameState = default;
 	[SerializeField] private int _heightLimit = default;
 
@@ -14,7 +15,7 @@ public class Checkpoint : MonoBehaviour
 			{
 				_gameState.Checkpoint = _spawnPosition;
 				_gameState.HeightLimit = _heightLimit;
-				gameObject.SetActive(false);
+				_paticles.Play();
 			}
 		}
 	}

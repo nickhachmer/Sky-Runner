@@ -2,14 +2,18 @@
 
 public class MainMenuController : MonoBehaviour
 {
-    public void Resume()
+
+    [SerializeField] private GameState _gameState = default;
+
+    public void PlayFromCheckpoint()
     {
-        // start from checkpoint
+        LoadGame();
     }
 
-    public void NewGame()
+    public void PlayGame()
     {
-        // start from tutorial
+        _gameState.Checkpoint = Vector3.zero;
+        LoadGame();
     }
 
     public void Quit()
@@ -17,4 +21,8 @@ public class MainMenuController : MonoBehaviour
         Application.Quit();
     }
 
+    private void LoadGame()
+    {
+
+    }
 }

@@ -89,8 +89,6 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
 
-
-
         // stretches the player sprite based on its vertical velocity
         _transform.localScale = new Vector3(4 + _rigidBody.velocity.x/ _stretchConstant, 4 - _rigidBody.velocity.y / _stretchConstant, 1);
 
@@ -171,7 +169,7 @@ public class PlayerMovementController : MonoBehaviour
             Debug.DrawLine(_activeOrbPosition, _transform.position, Color.red);
         }
 
-        UpdateAnimationState(_playerState.onGround, _playerState.onWall, _playerState.orbPulled, _playerState.isOrbActive);
+        if (!_playerState.isDead) UpdateAnimationState(_playerState.onGround, _playerState.onWall, _playerState.orbPulled, _playerState.isOrbActive);
 
         _playerState.slingShotReleased = false;
     }
@@ -392,7 +390,6 @@ public class PlayerMovementController : MonoBehaviour
         if ((1 << col.gameObject.layer) == _harmLayer.value && !_playerState.isDead)
         {
             Died();
-            Debug.Log("Player died");
         }
     }
     
