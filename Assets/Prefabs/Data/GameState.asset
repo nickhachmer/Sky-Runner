@@ -13,4 +13,3 @@ MonoBehaviour:
   m_Name: GameState
   m_EditorClassIdentifier: 
   _checkpoint: {x: 0, y: 0, z: -1}
-  _heightLimit: -10

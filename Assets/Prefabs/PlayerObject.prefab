@@ -4997,7 +4997,7 @@ MonoBehaviour:
   _walkParticles: {fileID: 5428497419671408168}
   _gameMessageText: {fileID: 0}
   _maxJumps: 2
-  _yPositionLimit: -10
+  _yPositionLimit: -50
   _stretchConstant: 30
 --- !u!114 &3230068225902034217
 MonoBehaviour:

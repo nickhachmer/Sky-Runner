@@ -59,8 +59,8 @@ public class PlayerAnimationController : MonoBehaviour
         // TODO: refactor out these "magic numbers" into consts
         if (mapping == SurfaceMapping.Air && velocity > 10 && (angle < 0 && angle > -45 || angle < -135 && angle > -180))
         {
-            _boxCollider.size = new Vector2(0.26f, 0.15f);
-            _boxCollider.offset = new Vector2(0.05f, 0.075f);
+            _boxCollider.size = new Vector2(0.19f, 0.15f);
+            _boxCollider.offset = new Vector2(0, 0.075f);
         }
         else if (mapping == SurfaceMapping.Orb && velocity > 0.01)
         {

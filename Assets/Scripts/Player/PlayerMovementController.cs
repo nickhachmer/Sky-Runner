@@ -67,7 +67,6 @@ public class PlayerMovementController : MonoBehaviour
         UpdateAnimationState += _animation.SetAnimationState;
         DeathAnimation += _animation.SetDeathState;
         _gameState.OnUpdateGameState += UpdateRespawnPosition;
-        _gameState.OnUpdateGameState += UpdateHeightLimit;
 
         _controls = new InputMaster();
         _controls.Player.Orb.canceled += context =>
@@ -81,6 +80,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _playerState.currentDirectionFacing = DirectionFacing.Right;
         _playerState.currentMovementState = MovementState.Default;
+        _transform.position = _respawnPosition;
     }
 
     /** 
@@ -378,11 +378,6 @@ public class PlayerMovementController : MonoBehaviour
         _respawnPosition = _gameState.Checkpoint;
     }
 
-    private void UpdateHeightLimit()
-    {
-        _yPositionLimit = _gameState.HeightLimit;
-    }
-
     #region GameObject Events
 
     void OnCollisionEnter2D(Collision2D col)
@@ -422,7 +417,6 @@ public class PlayerMovementController : MonoBehaviour
         UpdateAnimationState -= _animation.SetAnimationState;
         DeathAnimation -= _animation.SetDeathState;
         _gameState.OnUpdateGameState -= UpdateRespawnPosition;
-        _gameState.OnUpdateGameState -= UpdateHeightLimit;
     }
 
     #endregion
