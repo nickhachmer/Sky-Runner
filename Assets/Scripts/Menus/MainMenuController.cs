@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        _gameState.Checkpoint = Vector3.zero;
+        _gameState.Checkpoint = new Vector3(-6, -4.45f, -1);
         LoadGame();
     }
 
@@ -23,6 +24,6 @@ public class MainMenuController : MonoBehaviour
 
     private void LoadGame()
     {
-
+        SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
     }
 }
