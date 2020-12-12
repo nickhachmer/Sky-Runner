@@ -24,6 +24,13 @@ public class MainMenuController : MonoBehaviour
 
     private void LoadGame()
     {
-        SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
+        SceneManager.LoadScene("Gameplay", LoadSceneMode.Additive);
+        switch (_gameState.CurrentScene) 
+        {
+            case 1: SceneManager.LoadScene("Part_1", LoadSceneMode.Additive); break;
+            case 2: SceneManager.LoadScene("Part_2", LoadSceneMode.Additive); break;
+            default:
+                SceneManager.LoadScene("Tutorial", LoadSceneMode.Additive); break;
+        }
     }
 }

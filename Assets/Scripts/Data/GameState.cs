@@ -7,8 +7,8 @@ public class GameState : ScriptableObject
 {
 	public event Action OnUpdateGameState;
 
-	[SerializeField] private Vector3 _checkpoint = default;
-	// TODO: Add field for the current scene
+	[SerializeField] private Vector3 _checkpoint = Vector3.zero;
+	[SerializeField] private int _currentScene = 0;
 
 	public Vector3 Checkpoint 
 	{
@@ -23,4 +23,18 @@ public class GameState : ScriptableObject
 			OnUpdateGameState?.Invoke();
 		}
 	}
+
+	public int CurrentScene 
+	{
+        get
+        {
+			return _currentScene;
+        }	
+
+		set
+        {
+			_currentScene = value;
+        }
+	}
+
 }
