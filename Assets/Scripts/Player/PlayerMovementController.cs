@@ -23,6 +23,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private ParticleSystem             _dashParticles = default;
     [SerializeField] private ParticleSystem             _walkParticles = default;
     [SerializeField] private Text                       _gameMessageText = default;
+    [SerializeField] private Timer                      _timer = default;
     [SerializeField] private int                        _maxJumps = default;
     [SerializeField] private int                        _yPositionLimit = default;
     [SerializeField] private float                      _stretchConstant = default;
@@ -81,6 +82,7 @@ public class PlayerMovementController : MonoBehaviour
         _playerState.currentDirectionFacing = DirectionFacing.Right;
         _playerState.currentMovementState = MovementState.Default;
         _transform.position = _respawnPosition;
+        _timer.StartTimer();
     }
 
     /** 
