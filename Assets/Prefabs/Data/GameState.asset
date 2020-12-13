@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: GameState
   m_EditorClassIdentifier: 
   _checkpoint: {x: -6, y: -4.75, z: -1}
-  _currentScene: 2
+  _currentScene: 0
+  _bestTime: 0

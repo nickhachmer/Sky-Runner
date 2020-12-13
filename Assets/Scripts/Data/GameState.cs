@@ -7,7 +7,7 @@ public class GameState : ScriptableObject
 {
 	public event Action OnUpdateGameState;
 
-	[SerializeField] private Vector3 _checkpoint = Vector3.zero;
+	[SerializeField] private Vector3 _checkpoint = new Vector3(-6, -4.45f, -1);
 	[SerializeField] private int _currentScene = 0;
 	[SerializeField] private float _bestTime = 0;
 

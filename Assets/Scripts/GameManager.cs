@@ -7,19 +7,20 @@ public class GameManager
 
     private static GameManager _instance;
 
-    private PlayerMovementController _playerMovementController;
+    private PlayerController _playerController;
     private CameraMovementController _cameraMovementController;
+    private SceneController _sceneController;
     private PauseMenuController _pauseMenu;    
 
-    public PlayerMovementController PlayerMovementController { 
+    public PlayerController PlayerController { 
         get
         {
-            if (_playerMovementController == null)
+            if (_playerController == null)
             {
-                _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+                _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
             }
 
-            return _playerMovementController;
+            return _playerController;
         }
     }
 
@@ -33,6 +34,19 @@ public class GameManager
             }
 
             return _cameraMovementController;
+        }
+    }
+    
+    public SceneController SceneController
+    {
+        get
+        {
+            if (_sceneController == null)
+            {
+                _sceneController = GameObject.FindGameObjectWithTag("SceneController").GetComponent<SceneController>();
+            }
+
+            return _sceneController;
         }
     }
 

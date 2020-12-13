@@ -5,8 +5,9 @@ using Assets.Scripts.Player;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     #region PlayerMovement Properties
 
@@ -23,6 +24,8 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private ParticleSystem             _dashParticles = default;
     [SerializeField] private ParticleSystem             _walkParticles = default;
     [SerializeField] private Text                       _gameMessageText = default;
+    [SerializeField] private GameObject                 _loadingScreen = default;
+    [SerializeField] private Text                       _loadingText = default;
     [SerializeField] private Timer                      _timer = default;
     [SerializeField] private int                        _maxJumps = default;
     [SerializeField] private int                        _yPositionLimit = default;
@@ -47,6 +50,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private float _horizontalAxis = 0;
     private float _verticalAxis = 0;
+    private bool _play;
 
     #endregion
 
@@ -82,7 +86,9 @@ public class PlayerMovementController : MonoBehaviour
         _playerState.currentDirectionFacing = DirectionFacing.Right;
         _playerState.currentMovementState = MovementState.Default;
         _transform.position = _respawnPosition;
-        _timer.StartTimer();
+
+        _play = false; 
+        StartCoroutine(PressAnyToPlay());
     }
 
     /** 
@@ -90,6 +96,7 @@ public class PlayerMovementController : MonoBehaviour
     */
     private void Update()
     {
+        if (!_play) return;
 
         // stretches the player sprite based on its vertical velocity
         _transform.localScale = new Vector3(4 + _rigidBody.velocity.x/ _stretchConstant, 4 - _rigidBody.velocity.y / _stretchConstant, 1);
@@ -373,6 +380,27 @@ public class PlayerMovementController : MonoBehaviour
         _transform.position = _respawnPosition;
         _rigidBody.constraints ^= RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         _playerState.isDead = false;
+    }
+
+    IEnumerator PressAnyToPlay()
+    {
+        yield return new WaitUntil(() => 
+            SceneManager.GetSceneByName("Tutorial").isLoaded 
+            || SceneManager.GetSceneByName("Part_1").isLoaded 
+            || SceneManager.GetSceneByName("Part_2").isLoaded
+        );
+
+        _loadingText.text = "Press Any Key to Start";
+
+        var waitForAnyPress = new InputAction(binding: "/*/<button>");
+        waitForAnyPress.Enable();
+
+        yield return new WaitUntil(() => waitForAnyPress.triggered);
+
+        _loadingScreen.SetActive(false);
+
+        _timer.StartTimer();
+        _play = true;
     }
 
     private void UpdateRespawnPosition()

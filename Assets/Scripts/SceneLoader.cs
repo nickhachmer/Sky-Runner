@@ -83,6 +83,8 @@ public class SceneLoader : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        Debug.Log("shouldLoad load");
+
         if (col.CompareTag("Player"))
         {
             _shouldLoad = true;
@@ -100,6 +102,8 @@ public class SceneLoader : MonoBehaviour
     void TriggerCheck()
     {
         // _shouldLoad is set from the Trigger methods
+        if (gameObject.name.Equals("Tutorial"))
+            Debug.Log("should>>>    " + _shouldLoad);
         if (_shouldLoad)
         {
             LoadScene();

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - PauseMenu
+  - SceneController
   layers:
   - Default
   - TransparentFX

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public GameObject es = default;
+
     [SerializeField] private GameObject PauseMenu = default;
     [SerializeField] private GameObject OptionsMenu = default;
 
@@ -21,7 +23,8 @@ public class PauseMenuController : MonoBehaviour
 
     public void ExitToMenu()
     {
-        SceneManager.LoadScene(0);
+        es.SetActive(false);
+        StartCoroutine(GameManager.Instance.SceneController.LoadMainMenu());
     }
 
 

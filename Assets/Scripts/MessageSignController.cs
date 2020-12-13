@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MessageSignController : MonoBehaviour
 {
-    [SerializeField] private string _message = default;
+    [SerializeField] [TextArea(3, 10)] private string _message = default;
     
     public string getMessage()
     {

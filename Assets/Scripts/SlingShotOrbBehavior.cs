@@ -7,7 +7,7 @@ public class SlingShotOrbBehavior : MonoBehaviour
     [SerializeField] private PhysicsDatabase _physicsDatabase = default;
     [SerializeField] private Transform _orbRangeIndicator = default;
     [SerializeField] private short _orbRangeOverride = 0;
-    private PlayerMovementController _playerMovementController = default;
+    private PlayerController _playerController = default;
 
     private Transform _playerTransform;
     private short _orbRange = default;
@@ -26,8 +26,8 @@ public class SlingShotOrbBehavior : MonoBehaviour
         
         _orbRangeIndicator.localScale = new Vector3(4 * _orbRange, 4 * _orbRange, 1);
 
-        _playerMovementController = GameManager.Instance.PlayerMovementController;
-        _playerTransform = _playerMovementController.Transform;
+        _playerController = GameManager.Instance.PlayerController;
+        _playerTransform = _playerController.Transform;
 
     }
 
@@ -36,12 +36,12 @@ public class SlingShotOrbBehavior : MonoBehaviour
         if (Vector2.Distance(transform.position, _playerTransform.position) < _orbRange)
         {
             _isActive = true;
-            _playerMovementController.SetActiveOrb(true, transform.position);
+            _playerController.SetActiveOrb(true, transform.position);
         }
         else if (_isActive)
         {
             _isActive = false;
-            _playerMovementController.SetActiveOrb(false, Vector3.zero);
+            _playerController.SetActiveOrb(false, Vector3.zero);
         }
 
         if (_isActive)
