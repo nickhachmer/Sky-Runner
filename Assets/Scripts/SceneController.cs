@@ -11,18 +11,11 @@ public class SceneController : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public IEnumerator LoadGame(string sceneToLoad)
+    public IEnumerator LoadGame()
     {
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Additive);
 
         yield return new WaitUntil(() => asyncOperation.isDone);
-
-        if (SceneManager.GetSceneByName(sceneToLoad).isLoaded)
-        {
-            Debug.Log("herhe rhaehr heahr aher");
-            asyncOperation = SceneManager.LoadSceneAsync(sceneToLoad);
-            yield return new WaitUntil(() => asyncOperation.isDone);
-        }
 
         if (SceneManager.GetSceneByName("MainMenu").isLoaded)
         {

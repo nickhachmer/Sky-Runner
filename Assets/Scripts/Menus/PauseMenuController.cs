@@ -24,6 +24,7 @@ public class PauseMenuController : MonoBehaviour
     public void ExitToMenu()
     {
         es.SetActive(false);
+        Time.timeScale = 1f;
         StartCoroutine(GameManager.Instance.SceneController.LoadMainMenu());
     }
 

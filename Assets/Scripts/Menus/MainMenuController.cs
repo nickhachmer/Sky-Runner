@@ -39,6 +39,6 @@ public class MainMenuController : MonoBehaviour
     private void LoadGame()
     {
         es.SetActive(false);
-        StartCoroutine(GameManager.Instance.SceneController.LoadGame("Tutorial"));
+        StartCoroutine(GameManager.Instance.SceneController.LoadGame());
     }
 }
