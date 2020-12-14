@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf127f28146c974791716e813d93662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  es: {fileID: 76083707}
+  _eventSystem: {fileID: 76083707}
   _gameState: {fileID: 11400000, guid: 282c6d07d07d94513841350d7148a9d1, type: 2}
   _playFromCheckpointButton: {fileID: 1479861345}
 --- !u!1 &752969248

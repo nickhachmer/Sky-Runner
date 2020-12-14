@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PauseMenu
   - SceneController
+  - Timer
   layers:
   - Default
   - TransparentFX

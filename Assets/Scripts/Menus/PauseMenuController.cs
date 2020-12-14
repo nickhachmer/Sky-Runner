@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
-    public GameObject es = default;
-
+    [SerializeField] private GameState _gameState = default;
+    [SerializeField] private GameObject _eventSystem = default;
+    [SerializeField] private Timer _timer = default;
     [SerializeField] private GameObject PauseMenu = default;
     [SerializeField] private GameObject OptionsMenu = default;
 
@@ -23,7 +24,8 @@ public class PauseMenuController : MonoBehaviour
 
     public void ExitToMenu()
     {
-        es.SetActive(false);
+        _gameState.CurrentTime = _timer.ElapsedTime;
+        _eventSystem.SetActive(false);
         Time.timeScale = 1f;
         StartCoroutine(GameManager.Instance.SceneController.LoadMainMenu());
     }

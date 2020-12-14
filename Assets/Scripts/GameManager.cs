@@ -11,6 +11,7 @@ public class GameManager
     private CameraMovementController _cameraMovementController;
     private SceneController _sceneController;
     private PauseMenuController _pauseMenu;    
+    private Timer _timer;    
 
     public PlayerController PlayerController { 
         get
@@ -65,6 +66,23 @@ public class GameManager
         set
         {
             _pauseMenu = value;
+        }
+    }
+    
+    public Timer Timer
+    {
+        get
+        {
+            if (_timer == null)
+            {
+                _timer = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timer>();
+            }
+
+            return _timer;
+        }
+        set
+        {
+            _timer = value;
         }
     }
 

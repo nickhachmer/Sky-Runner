@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
 
-    public GameObject es = default;
+    public GameObject _eventSystem = default;
 
     [SerializeField] private GameState _gameState = default;
     [SerializeField] private GameObject _playFromCheckpointButton = default;
@@ -28,6 +28,7 @@ public class MainMenuController : MonoBehaviour
     public void PlayGame()
     {
         _gameState.Checkpoint = new Vector3(-6, -4.45f, -1);
+        _gameState.CurrentTime = 0f;
         LoadGame();
     }
 
@@ -38,7 +39,7 @@ public class MainMenuController : MonoBehaviour
 
     private void LoadGame()
     {
-        es.SetActive(false);
+        _eventSystem.SetActive(false);
         StartCoroutine(GameManager.Instance.SceneController.LoadGame());
     }
 }

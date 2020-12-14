@@ -920,8 +920,8 @@ GameObject:
   - component: {fileID: 180556772}
   - component: {fileID: 180556774}
   m_Layer: 5
-  m_Name: TimerText
-  m_TagString: Untagged
+  m_Name: Timer
+  m_TagString: Timer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1899,7 +1899,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c62c290a2364445977673a3a248c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  es: {fileID: 1232418845}
+  _gameState: {fileID: 11400000, guid: 282c6d07d07d94513841350d7148a9d1, type: 2}
+  _eventSystem: {fileID: 1232418845}
+  _timer: {fileID: 180556774}
   PauseMenu: {fileID: 277992121}
   OptionsMenu: {fileID: 358297972}
 --- !u!224 &277992125

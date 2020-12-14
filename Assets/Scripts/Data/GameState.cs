@@ -8,7 +8,7 @@ public class GameState : ScriptableObject
 	public event Action OnUpdateGameState;
 
 	[SerializeField] private Vector3 _checkpoint = new Vector3(-6, -4.45f, -1);
-	[SerializeField] private int _currentScene = 0;
+	[SerializeField] private float _currentTime = 0;
 	[SerializeField] private float _bestTime = 0;
 
 	public Vector3 Checkpoint 
@@ -25,19 +25,6 @@ public class GameState : ScriptableObject
 		}
 	}
 
-	public int CurrentScene 
-	{
-        get
-        {
-			return _currentScene;
-        }	
-
-		set
-        {
-			_currentScene = value;
-        }
-	}
-
 	public float BestTime
 	{
 		get
@@ -51,6 +38,19 @@ public class GameState : ScriptableObject
             {
 				_bestTime = value;
 			}
+		}
+	}
+	
+	public float CurrentTime
+	{
+		get
+		{
+			return _currentTime;
+		}
+
+		set
+		{
+			_currentTime = value;
 		}
 	}
 }
