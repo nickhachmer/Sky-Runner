@@ -37,9 +37,14 @@ public class Timer : MonoBehaviour
         _running = true;
     }
 
+    // called when goal is reached
     public void StopTimer()
     {
-        _gameState.BestTime = ElapsedTime;
+        _gameState.CurrentTime = ElapsedTime;
+        if (ElapsedTime < _gameState.BestTime || _gameState.BestTime == 0)
+        {
+            _gameState.BestTime = ElapsedTime;
+        }
         _running = false;
     }
 }

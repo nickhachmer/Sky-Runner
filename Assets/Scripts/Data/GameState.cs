@@ -34,10 +34,7 @@ public class GameState : ScriptableObject
 
 		set
 		{
-			if (value < _bestTime || _bestTime == 0)
-            {
-				_bestTime = value;
-			}
+			_bestTime = value;
 		}
 	}
 	
