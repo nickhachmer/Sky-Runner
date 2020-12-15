@@ -6902,7 +6902,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112508948}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 808.09, y: 530.35, z: -153.15492}
+  m_LocalPosition: {x: 808.09, y: 528.8, z: -153.15492}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10084,8 +10084,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1515340491}
   - component: {fileID: 1515340490}
-  - component: {fileID: 1515340492}
   - component: {fileID: 1515340493}
+  - component: {fileID: 1515340492}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -10215,7 +10215,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f6580897a93d041b05a6ed455d8f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioSource: {fileID: 1515340490}
+  _gameSettings: {fileID: 11400000, guid: 015eac50065e8a84791e1784fb25b6ea, type: 2}
+  _soundEffects: {fileID: 1515340490}
+  _windSound: {fileID: 1515340493}
   _soundsDatabase: {fileID: 11400000, guid: ff36cf58e24dcaf418778dc6980edf78, type: 2}
 --- !u!82 &1515340493
 AudioSource:

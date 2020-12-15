@@ -13,32 +13,45 @@ public enum SoundEffects {
 
 public class SoundManager : MonoBehaviour
 {
-
-    [SerializeField] private AudioSource _audioSource = default;
+    [SerializeField] private GameSettings _gameSettings = default;
+    [SerializeField] private AudioSource _soundEffects = default;
+    [SerializeField] private AudioSource _windSound = default;
     [SerializeField] private SoundsDatabase _soundsDatabase = default;
+
+    void Start()
+    {
+        _gameSettings.OnUpdateGameSettings += updateVolume;
+        updateVolume();
+    }
 
     public void PlaySoundEffect(SoundEffects soundEffect)
     {
         switch (soundEffect) {
             case SoundEffects.Jump:
-                _audioSource.PlayOneShot(_soundsDatabase.Jump);
+                _soundEffects.PlayOneShot(_soundsDatabase.Jump);
                 break;
             case SoundEffects.Dash:
-                _audioSource.PlayOneShot(_soundsDatabase.Dash);
+                _soundEffects.PlayOneShot(_soundsDatabase.Dash);
                 break;
             case SoundEffects.WallJump:
-                _audioSource.PlayOneShot(_soundsDatabase.WallJump); break;
+                _soundEffects.PlayOneShot(_soundsDatabase.WallJump); break;
             case SoundEffects.OnWall:
-                _audioSource.PlayOneShot(_soundsDatabase.OnWall); 
+                _soundEffects.PlayOneShot(_soundsDatabase.OnWall); 
                 break;
             case SoundEffects.Orb:
-                _audioSource.loop = true;
-                if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_soundsDatabase.Orb);
+                _soundEffects.loop = true;
+                if (!_soundEffects.isPlaying) _soundEffects.PlayOneShot(_soundsDatabase.Orb);
                 break;
             case SoundEffects.MovingFast:
-                _audioSource.PlayOneShot(_soundsDatabase.MovingFast);
+                _soundEffects.PlayOneShot(_soundsDatabase.MovingFast);
                 break;
         }
+    }
+
+    private void updateVolume()
+    {
+        _soundEffects.volume = _gameSettings.SoundEffectsVolume;
+        _windSound.volume = _gameSettings.WindVolume;
     }
 
 }
