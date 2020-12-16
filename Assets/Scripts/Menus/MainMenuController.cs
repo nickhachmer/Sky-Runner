@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -8,6 +10,8 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] private GameState _gameState = default;
     [SerializeField] private GameObject _playFromCheckpointButton = default;
+    [SerializeField] private Text _bestTimeText = default;
+    private bool isBestTimeTextShowing = false;
 
     void Start()
     {
@@ -35,6 +39,24 @@ public class MainMenuController : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ToggleBestTimeText()
+    {
+        if (isBestTimeTextShowing)
+        {
+            _bestTimeText.text = string.Empty;
+            isBestTimeTextShowing = false;
+        } 
+        else
+        {
+            TimeSpan bestTime = TimeSpan.FromSeconds(_gameState.BestTime);
+            _bestTimeText.text = string.Format(
+                "Best Time : {0}",
+                bestTime.ToString("mm':'ss'.'ff")
+            );
+            isBestTimeTextShowing = true;
+        }
     }
 
     private void LoadGame()

@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class Parallax : MonoBehaviour
 {
-    [SerializeField] private GameObject _camera = default;
+    
     [SerializeField] private float _parallaxEffect = default;
+    private GameObject _camera = default;
     private float _startPosition = default;
 
 
     void Start()
     {
         _startPosition = transform.position.x;
+        _camera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     // Update is called once per frame

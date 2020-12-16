@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,10 +14,12 @@ public class Goal : MonoBehaviour
 		if (col.CompareTag("Player"))
 		{
 			GameManager.Instance.Timer.StopTimer();
+			TimeSpan bestTime = TimeSpan.FromSeconds(_gameState.BestTime);
+			TimeSpan currentTime = TimeSpan.FromSeconds(_gameState.CurrentTime);
 			_messageText.text = string.Format(
 				"Best Time     {0}\nCurrent Time     {1}",
-				_gameState.BestTime,
-				_gameState.CurrentTime
+				bestTime.ToString("mm':'ss'.'ff"),
+				currentTime.ToString("mm':'ss'.'ff")
 			);
 		}
 	}
