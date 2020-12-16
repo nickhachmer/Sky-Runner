@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a0b43d7a7d7744da9e185669ca1079, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  _soundEffectsVolume: 1
+  _soundEffectsVolume: 0.6
   _windVolume: 0.02

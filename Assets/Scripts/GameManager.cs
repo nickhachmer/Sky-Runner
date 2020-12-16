@@ -37,7 +37,7 @@ public class GameManager
             return _cameraMovementController;
         }
     }
-    
+
     public SceneController SceneController
     {
         get

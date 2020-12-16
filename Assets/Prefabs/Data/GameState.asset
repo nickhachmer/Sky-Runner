@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757bb919ba1cb4fde933ee99c9d6fcfe, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  _checkpoint: {x: -6, y: -4.75, z: -1}
-  _currentScene: 0
+  _checkpoint: {x: -6, y: -4.45, z: -1}
+  _currentTime: 0
   _bestTime: 0

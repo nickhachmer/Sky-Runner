@@ -20,6 +20,15 @@ public class Parallax : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_camera == null)
+        {
+            // if we dont have the camera try again
+            _camera = GameObject.FindGameObjectWithTag("MainCamera");
+        }
+
+        // if it is still null dont do the calculations
+        if (_camera == null) return;
+
         float distance = (_camera.transform.position.x * _parallaxEffect);
 
         transform.position = new Vector3(_startPosition + distance, transform.position.y, transform.position.z);
